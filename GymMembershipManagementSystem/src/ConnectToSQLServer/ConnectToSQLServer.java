@@ -29,14 +29,14 @@ public class ConnectToSQLServer {
                 + ";databaseName=" + dataBase + ";integratedSecurity=true;"
                 + "encrypt=true;trustServerCertificate=true";
         //jdbc:sqlserver://localhost:1433;databaseName=GMMS
-        try(Connection connection = DriverManager.getConnection(connectionUrl, user, password)){
-            if(connection!=null){
+        try(Connection con = DriverManager.getConnection(connectionUrl, user, password)){
+            if(con!=null){
                 System.out.println("Connected to database successfully");
             }else{
                 System.out.println("Failed to connect to database");
             }
         }catch(SQLException e){
-            e.printStackTrace();
+            System.out.println("Error Error Error");
         }
     }
 }
