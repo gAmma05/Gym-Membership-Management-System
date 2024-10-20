@@ -1,8 +1,24 @@
-CREATE TABLE account_authenciation(
-	id INT IDENTITY(1,1) PRIMARY KEY,
-	username VARCHAR(255) NOT NULL UNIQUE,
-	password VARCHAR(255) NOT NULL,
-	salt NVARCHAR(255) NOT NULL
+CREATE TABLE Users (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    salt NVARCHAR(255) NOT NULL,
+    -- Field cho tất cả users:
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    address VARCHAR(255),
+    city VARCHAR(255),
+    birth DATE,
+    phoneNumber NVARCHAR(9),
+    gender NVARCHAR(10) CHECK (gender IN ('Male', 'Female')),
+    
+    -- Field cho Member:
+    joinDate DATE,
+    membership_ID INT,
+    FOREIGN KEY(membership_ID) REFERENCES membership_plan(membership_ID),
+    
+    -- Field cho Trainer:
+    availableSessions VARCHAR(512)
 );
 
 
@@ -14,48 +30,19 @@ CREATE TABLE membership_plan(
 	benefit VARCHAR(512)
 );
 
-CREATE TABLE Admin(
-	id INT IDENTITY(1,1) PRIMARY KEY,
-	account_ID INT,
-	FOREIGN KEY(account_ID) REFERENCES account_authenciation(id) on DELETE CASCADE,
-
-	admin_name VARCHAR(255) NOT NULL
+CREATE TABLE Admin (
+    admin_id INT PRIMARY KEY,
+    FOREIGN KEY(admin_id) REFERENCES Users(id),
 );
 
-
-CREATE TABLE Member(
-	id INT IDENTITY(1,1) PRIMARY KEY,
-	account_ID INT,
-	FOREIGN KEY(account_ID) REFERENCES account_authenciation(id) on DELETE CASCADE,
-
-	name VARCHAR(255) NOT NULL,
-	email VARCHAR(255) NOT NULL UNIQUE,
-	address VARCHAR(255) NOT NULL,
-	city VARCHAR(255) NOT NULL,
-	birth DATE NOT NULL,
-	phoneNumber NVARCHAR(9) NOT NULL,
-
-	gender NVARCHAR(10) CHECK (gender IN ('Male', 'Female')),	
-	joinDate DATE DEFAULT GETDATE(),
-	membership_ID INT, 
-	
-	CONSTRAINT FK_Member_membershipID FOREIGN KEY(membership_ID) REFERENCES membership_plan(membership_ID)
+CREATE TABLE Member (
+    member_id INT PRIMARY KEY,
+    FOREIGN KEY(member_id) REFERENCES Users(id),
 );
 
-
-CREATE TABLE Trainer(
-	id INT IDENTITY(1,1) PRIMARY KEY,
-	account_ID INT,
-	FOREIGN KEY(account_ID) REFERENCES account_authenciation(id) on DELETE CASCADE,
-
-	name VARCHAR(255) NOT NULL,
-	email VARCHAR(255) NOT NULL UNIQUE,
-	address VARCHAR(255) NOT NULL,
-	city VARCHAR(255) NOT NULL,
-	birth DATE NOT NULL,
-	phoneNumber NVARCHAR(9) NOT NULL,
-
-	gender NVARCHAR(10) CHECK (gender IN ('Male', 'Female')),
+CREATE TABLE Trainer (
+    trainer_id INT PRIMARY KEY,
+    FOREIGN KEY(trainer_id) REFERENCES Users(id),
 );
 
 CREATE TABLE Payment(
