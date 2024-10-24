@@ -3,12 +3,31 @@ CREATE TABLE Users (
     username VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     salt NVARCHAR(255) NOT NULL,
+<<<<<<< HEAD
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     role VARCHAR(20) NOT NULL,
     phoneNumber NVARCHAR(9),
     gender NVARCHAR(10) CHECK (gender IN ('Male', 'Female')),
 
+=======
+    -- Field cho tất cả users:
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    address VARCHAR(255),
+    city VARCHAR(255),
+    birth DATE,
+    phoneNumber NVARCHAR(9),
+    gender NVARCHAR(10) CHECK (gender IN ('Male', 'Female')),
+    
+    -- Field cho Member:
+    joinDate DATE,
+    membership_ID INT,
+    FOREIGN KEY(membership_ID) REFERENCES membership_plan(membership_ID),
+    
+    -- Field cho Trainer:
+    availableSessions VARCHAR(512)
+>>>>>>> 3187e3ecc824429ce5e920f227a0c360f10903b6
 );
 
 
@@ -24,22 +43,32 @@ CREATE TABLE Membership_Plan(
 CREATE TABLE Admin (
     admin_id INT PRIMARY KEY,
     FOREIGN KEY(admin_id) REFERENCES Users(id),
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3187e3ecc824429ce5e920f227a0c360f10903b6
 );
 
 CREATE TABLE Member (
     member_id INT PRIMARY KEY,
+<<<<<<< HEAD
     FOREIGN KEY(member_id) REFERENCES Users(id)
 	msID INT FOREIGN KEY REFERENCES Membership_Plan(membership_ID),
 	joinDate DATE,
 	expiredDate DATE,
 
+=======
+    FOREIGN KEY(member_id) REFERENCES Users(id),
+>>>>>>> 3187e3ecc824429ce5e920f227a0c360f10903b6
 );
 
 CREATE TABLE Trainer (
     trainer_id INT PRIMARY KEY,
     FOREIGN KEY(trainer_id) REFERENCES Users(id),
+<<<<<<< HEAD
 	expYear INT
+=======
+>>>>>>> 3187e3ecc824429ce5e920f227a0c360f10903b6
 );
 
 CREATE TABLE TrainingSession (
