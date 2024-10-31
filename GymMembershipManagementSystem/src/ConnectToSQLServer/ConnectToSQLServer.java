@@ -14,8 +14,9 @@ import java.sql.SQLException;
  * @author gAmma
  */
 public class ConnectToSQLServer {
+    //public static Connection conn;
 
-    public void getConnection() throws ClassNotFoundException, SQLException {
+    public static Connection getConnection() throws ClassNotFoundException, SQLException {
         String server = "localhost";
         String user = "sa";
         String port = "1433";
@@ -29,14 +30,14 @@ public class ConnectToSQLServer {
                 + ";databaseName=" + dataBase + ";integratedSecurity=true;"
                 + "encrypt=true;trustServerCertificate=true";
         //jdbc:sqlserver://localhost:1433;databaseName=GMMS
-        try(Connection con = DriverManager.getConnection(connectionUrl, user, password)){
-            if(con!=null){
-                System.out.println("Connected to database successfully");
-            }else{
-                System.out.println("Failed to connect to database");
+        try (Connection con = DriverManager.getConnection(connectionUrl, user, password)) {
+            if (con != null) {
+                return con;
             }
-        }catch(SQLException e){
-            System.out.println("Error Error Error");
+        } catch (SQLException e) {
+            System.out.println("Failed to connect to SQL Server. Reason: Error in SQL");
         }
+        return null;
     }
+    
 }
