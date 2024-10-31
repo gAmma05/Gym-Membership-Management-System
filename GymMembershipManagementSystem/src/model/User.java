@@ -33,10 +33,6 @@ public class User {
         this.name = name;
         this.email = email;
         this.address = address;
-<<<<<<< HEAD
-=======
-        this.city = city;
->>>>>>> 3187e3ecc824429ce5e920f227a0c360f10903b6
         this.birth = birth;
         this.phoneNumber = phoneNumber;
         this.gender = gender;
@@ -98,17 +94,6 @@ public class User {
         this.address = address;
     }
 
-<<<<<<< HEAD
-=======
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
->>>>>>> 3187e3ecc824429ce5e920f227a0c360f10903b6
     public String getBirth() {
         return birth;
     }
