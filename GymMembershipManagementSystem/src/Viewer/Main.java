@@ -6,17 +6,27 @@
 package Viewer;
 
 import ConnectToSQLServer.ConnectToSQLServer;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
 import java.sql.SQLException;
-
-
 
 /**
  *
  * @author gAmma
  */
 public class Main {
-    public static void main(String[] args) throws ClassNotFoundException, SQLException{
-        ConnectToSQLServer ctss = new ConnectToSQLServer();
-        ctss.getConnection();
+    
+    public static Menu mn = new Menu();
+
+    public static void main(String[] args) throws ClassNotFoundException, SQLException, NoSuchAlgorithmException {
+        Connection con = ConnectToSQLServer.getConnection();
+        if(con != null){
+            System.out.println("Connected to database successfully");
+            mn.Menu();
+        }else{
+            System.out.println("Failed to connect to database");
+        }
+        //System.out.println(con);
+
     }
 }
