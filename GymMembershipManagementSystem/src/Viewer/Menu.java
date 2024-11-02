@@ -5,115 +5,139 @@
  */
 package Viewer;
 
-import Access.UserLogin;
-import Access.UserRegistration;
+import Controller.IMemberManagement;
+import Controller.MemberManagement;
 import Utils.Validation;
-import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
+import java.util.Scanner;
 
 /**
  *
  * @author gAmma
  */
-public class Menu {
+public class MemberMenu {
 
-    public UserLogin ul = new UserLogin();
-    public UserRegistration ur = new UserRegistration();
-    
+    public Scanner sc = new Scanner(System.in);
+    IMemberManagement mm = new MemberManagement();
 
-    public void Menu() throws NoSuchAlgorithmException, SQLException {
+    public void mmenu() {
         int option = 0;
+        System.out.println(" ------------//------------");
+        System.out.println("Welcome," + "");//user welcome
         do {
-            System.out.println("WELCOME TO KIVOTOS GYM");
-            System.out.println("1. Login");
-            System.out.println("2. Register");
-            System.out.println("3. Exit");
-            System.out.print("Your option: ");
-            option = Validation.checkInt("");
+            System.out.print("We only accept credit card!");
+            System.out.println("1. Create your plan");
+            System.out.println("2. Update your plan");
+            System.out.println("3. Delete your plan");
+            System.out.println("4. Make the renewal");
+            System.out.println("5. Settings");
+            System.out.println("6. Logout");
+            System.out.println("Your option: ");
+            option = sc.nextInt();
+
             switch (option) {
                 case 1:
-                    Login();
+                    createMembership();
                     break;
 
                 case 2:
-                    Register();
+                    updateMembership();
                     break;
 
                 case 3:
-                    System.out.println("Good bye");
+                    deleteMembership();
+                    break;
+
+                case 4:
+                    break;
+
+                case 5:
+                    break;
+
+                case 6:
                     break;
 
                 default:
-                    System.out.println("Invalid input");
-                    break;
             }
-        } while (option > 0 && option < 3);
+        } while (option != 0);
     }
 
-    private void Login() throws SQLException, NoSuchAlgorithmException {
-        System.out.print("Username: ");
-        String username = Validation.checkString("");
+    private void createMembership() {
+        System.out.print("Choose the membership you desire (Use 1|2|3|4): ");
+        System.out.println("1.Bronze - 5$/month");
+        System.out.println("2.Silver - 10$/month");
+        System.out.println("3.Gold - 20$/month");
+        System.out.println("4.Diamond - 40$/ month");
 
-        System.out.print("Password: ");
-        String password = Validation.checkString("");
-        if (Validation.passwordLengthCheck(password) == false) {
-            System.out.println("Password must be longer than 6 characters");
-            return;
+        System.out.print("Your option: ");
+        int mo = Validation.checkInt("");
+
+        String cr = "";
+        System.out.print("How many months you want to subscribe: ");
+        int durationMonths = sc.nextInt();
+        int price = 0;
+
+        switch (mo) {
+            case 1:
+                cr = "Bronze";
+                price = 5 * durationMonths;
+                break;
+            case 2:
+                cr = "Silver";
+                price = 10 * durationMonths;
+                break;
+            case 3:
+                cr = "Gold";
+                price = 20 * durationMonths;
+                break;
+            case 4:
+                cr = "Diamond";
+                price = 40 * durationMonths;
+                break;
+            default:
+                break;
         }
-        if (ul.Login(username, password) == true) {
-            
-        }
+
+        mm.create(cr, durationMonths, price);
+
     }
 
-    private void Register() throws NoSuchAlgorithmException, SQLException {
-        System.out.print("Username: ");
-        String username = Validation.checkString("");
+    private void updateMembership() {
+        System.out.print("Choose the membership you desire (Use 1|2|3|4): ");
+        System.out.println("1.Bronze - 5$/month");
+        System.out.println("2.Silver - 10$/month");
+        System.out.println("3.Gold - 20$/month");
+        System.out.println("4.Diamond - 40$/month");
+        int mo = Validation.checkInt("");
+        String up = "";
+        System.out.print("How many months you want to subscribe: ");
+        int updDurationMonths = sc.nextInt();
+        int updPrice = 0;
 
-        System.out.print("Password: ");
-        String password = Validation.checkString("");
-        if (Validation.passwordLengthCheck(password) == false) {
-            System.out.println("Password must be longer than 6 characters");
-            return;
+        switch (mo) {
+            case 1:
+                up = "Bronze";
+                updPrice = 5 * updDurationMonths;
+                break;
+            case 2:
+                up = "Silver";
+                updPrice = 10 * updDurationMonths;
+                break;
+            case 3:
+                up = "Gold";
+                updPrice = 20 * updDurationMonths;
+                break;
+            case 4:
+                up = "Diamond";
+                updPrice = 40 * updDurationMonths;
+                break;
+            default:
+                break;
         }
-
-        System.out.print("Fullname: ");
-        String name = Validation.checkString("");
-
-        System.out.print("Email: ");
-        String email = Validation.checkString("");
-
-        String role = "";
-        int roleN = 0;
-
-        do {
-            System.out.println("Choose role!");
-            System.out.println("1. Member");
-            System.out.println("2. Trainer");
-            System.out.println("Your option (1 | 2): ");
-            roleN = Validation.checkInt("");
-            switch (roleN) {
-                case 1:
-                    role = "Member";
-                    break;
-
-                case 2:
-                    role = "Trainer";
-                    break;
-
-                default:
-                    System.out.println("Invalid input! Try again!");
-                    break;
-
-            }
-        } while (roleN != 1 && roleN != 2);
-
-        System.out.print("Phone number (length > 6): ");
-        String phoneNumber = Validation.checkString("");
-        if (phoneNumber.length() > 6) {
-            ur.Register(username, password, name, email, role, phoneNumber);
-        } else {
-            System.out.println("Error");
-        }
-
+        mm.update(up, updDurationMonths, updPrice);
     }
+
+    private void deleteMembership() {
+        //mm.delete();
+    }
+
 }
