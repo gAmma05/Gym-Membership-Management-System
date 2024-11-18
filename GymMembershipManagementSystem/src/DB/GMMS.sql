@@ -41,7 +41,7 @@ GO
 -- Create Membership_Plan table
 CREATE TABLE Membership_Plan (
     membership_ID INT IDENTITY(1,1) PRIMARY KEY,
-    membershipName NVARCHAR(10) CHECK (membershipName IN ('Bronze', 'Silver', 'Gold', 'Platinum')),
+    membershipName NVARCHAR(10),
     durationMonths INT CHECK (durationMonths > 0),
     price INT CHECK (price > 0),
     benefit VARCHAR(512)

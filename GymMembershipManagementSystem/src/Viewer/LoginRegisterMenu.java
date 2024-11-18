@@ -7,6 +7,7 @@ package Viewer;
 
 import Access.UserLogin;
 import Access.UserRegistration;
+import Utils.PasswordCheck;
 import Utils.Validation;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
@@ -15,13 +16,12 @@ import java.sql.SQLException;
  *
  * @author gAmma
  */
-public class Menu {
+public class LoginRegisterMenu {
 
     public UserLogin ul = new UserLogin();
     public UserRegistration ur = new UserRegistration();
-    
 
-    public void Menu() throws NoSuchAlgorithmException, SQLException {
+    public void Menu() throws NoSuchAlgorithmException, SQLException, ClassNotFoundException {
         int option = 0;
         do {
             System.out.println("WELCOME TO KIVOTOS GYM");
@@ -50,17 +50,27 @@ public class Menu {
         } while (option > 0 && option < 3);
     }
 
-    private void Login() throws SQLException, NoSuchAlgorithmException {
+    private void Login() throws SQLException, NoSuchAlgorithmException, ClassNotFoundException {
         System.out.print("Username: ");
         String username = Validation.checkString("");
 
         System.out.print("Password: ");
         String password = Validation.checkString("");
-        if (Validation.passwordLengthCheck(password) == false) {
-            System.out.println("Password must be longer than 6 characters");
-            return;
-        }
-        if (ul.Login(username, password) == true) {
+        
+        /*
+        String yn = "";
+        do {
+            if (PasswordCheck.checkLength(password)) {
+                System.out.println("Password must be longer than 6 characters");
+                yn = Validation.checkYesNo("Do you want to continue trying again your password? (Y/N): ");
+                if(yn.equalsIgnoreCase("n")){
+                    return;
+                }
+            }
+        } while (PasswordCheck.checkLength(password) && yn.equalsIgnoreCase("y"));
+        */
+        
+        if (ul.Login(username, password)) {
             
         }
     }
@@ -71,7 +81,7 @@ public class Menu {
 
         System.out.print("Password: ");
         String password = Validation.checkString("");
-        if (Validation.passwordLengthCheck(password) == false) {
+        if (PasswordCheck.checkLength(password)) {
             System.out.println("Password must be longer than 6 characters");
             return;
         }
@@ -83,15 +93,15 @@ public class Menu {
         String email = Validation.checkString("");
 
         String role = "";
-        int roleN = 0;
+        int roleChoice = 0;
 
         do {
             System.out.println("Choose role!");
             System.out.println("1. Member");
             System.out.println("2. Trainer");
             System.out.println("Your option (1 | 2): ");
-            roleN = Validation.checkInt("");
-            switch (roleN) {
+            roleChoice = Validation.checkInt("");
+            switch (roleChoice) {
                 case 1:
                     role = "Member";
                     break;
@@ -103,17 +113,43 @@ public class Menu {
                 default:
                     System.out.println("Invalid input! Try again!");
                     break;
+            }
+        } while (roleChoice != 1 && roleChoice != 2);
+
+        String gender = "";
+        int genderChoice = 0;
+
+        do {
+            System.out.println("Choose gender!");
+            System.out.println("1. Male");
+            System.out.println("2. Female");
+            System.out.println("Your option (1 | 2): ");
+            genderChoice = Validation.checkInt("");
+            switch (genderChoice) {
+                case 1:
+                    role = "Male";
+                    break;
+
+                case 2:
+                    role = "Female";
+                    break;
+
+                default:
+                    System.out.println("Invalid input! Try again!");
+                    break;
 
             }
-        } while (roleN != 1 && roleN != 2);
+        } while (genderChoice != 1 && genderChoice != 2);
 
-        System.out.print("Phone number (length > 6): ");
-        String phoneNumber = Validation.checkString("");
-        if (phoneNumber.length() > 6) {
-            ur.Register(username, password, name, email, role, phoneNumber);
-        } else {
-            System.out.println("Error");
-        }
-
+        String phoneNumber;
+        do {
+            System.out.print("Phone number (length > 6): ");
+            phoneNumber = Validation.checkString("");
+            if (phoneNumber.length() > 6) {
+                ur.Register(username, password, name, email, role, phoneNumber, gender);
+            } else {
+                System.out.println("Your phone number must be longer than 6! Try again");
+            }
+        } while (phoneNumber.length() <= 6);
     }
 }
