@@ -5,19 +5,15 @@
  */
 package Utils;
 
-import Viewer.MemberMenu;
-import Viewer.TrainerMenu;
-
 /**
  *
  * @author gAmma
  */
-public class VerificationCheck {
-    MemberMenu mm = new MemberMenu();
-    
-    public void roleCheck(String role){
-        if(role.equals("member")){
-            mm.mmenu();
+public class PasswordCheck {
+    public static boolean checkLength(String password){
+        if (password.length() <= 6){
+            return true;
         }
+        return false;
     }
 }

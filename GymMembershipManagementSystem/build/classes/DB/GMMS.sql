@@ -32,6 +32,7 @@ CREATE TABLE Users (
     salt NVARCHAR(255) NOT NULL,
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
+    role VARCHAR(20) NOT NULL,
     phoneNumber NVARCHAR(9),
     gender NVARCHAR(10) CHECK (gender IN ('Male', 'Female'))
 );
@@ -57,6 +58,7 @@ GO
 -- Create Member table
 CREATE TABLE Member (
     member_id INT PRIMARY KEY,
+    FOREIGN KEY(member_id) REFERENCES Users(id),
     msID INT FOREIGN KEY REFERENCES Membership_Plan(membership_ID),
     joinDate DATE,
     expiredDate DATE
@@ -66,6 +68,7 @@ GO
 -- Create Trainer table
 CREATE TABLE Trainer (
     trainer_id INT PRIMARY KEY,
+    FOREIGN KEY(trainer_id) REFERENCES Users(id),
     expYear INT
 );
 GO

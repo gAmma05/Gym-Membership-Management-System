@@ -4,15 +4,14 @@ import ConnectToSQLServer.ConnectToSQLServer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import model.Member;
-import model.Trainer;
 
-public class MemberManagement extends IMemberManagement {
+public class AdminManagement implements IAdminManagement {
 
     // Method to create a new membership plan
-    public void createMembership(Member member, String membershipName, int duration, int price, String benefit) throws ClassNotFoundException {
+    @Override
+    public void createMembership(String membershipName, int duration, int price, String benefit) throws ClassNotFoundException {
         String query = "INSERT INTO Membership_Plan (membershipName, durationMonths, price, benefit) VALUES (?, ?, ?, ?)";
-        try (Connection con = new ConnectToSQLServer().getConnection();
+        try (Connection con = ConnectToSQLServer.getConnection();
              PreparedStatement pstmt = con.prepareStatement(query)) {
              
             pstmt.setString(1, membershipName);
@@ -28,9 +27,10 @@ public class MemberManagement extends IMemberManagement {
     }
     
     // Method to update a membership name and price
+    @Override
     public void updateMembership(int membershipId, String newMembershipName, int newPrice, int newDurationMonths) throws ClassNotFoundException {
     String query = "UPDATE Membership_Plan SET membershipName = ?, price = ?, durationMonths = ? WHERE membership_ID = ?";
-    try (Connection con = new ConnectToSQLServer().getConnection();
+    try (Connection con = ConnectToSQLServer.getConnection();
          PreparedStatement pstmt = con.prepareStatement(query)) {
 
         pstmt.setString(1, newMembershipName);
@@ -47,9 +47,10 @@ public class MemberManagement extends IMemberManagement {
 
 
     // Method to delete a membership
+    @Override
     public void deleteMembership(int membershipId) throws ClassNotFoundException {
         String query = "DELETE FROM Membership_Plan WHERE membership_ID = ?";
-        try (Connection con = new ConnectToSQLServer().getConnection();
+        try (Connection con = ConnectToSQLServer.getConnection();
              PreparedStatement pstmt = con.prepareStatement(query)) {
              
             pstmt.setInt(1, membershipId);
@@ -61,6 +62,7 @@ public class MemberManagement extends IMemberManagement {
         }
     }
 
+    /*
     // Method to create a new trainer
     public void createTrainer(Trainer trainer) throws ClassNotFoundException {
         String query = "INSERT INTO Trainer (trainer_id, expYear, availableSessions) VALUES (?, ?, ?)";
@@ -92,6 +94,8 @@ public class MemberManagement extends IMemberManagement {
             System.out.println("Error updating trainer: " + e.getMessage());
         }
     }
+
+    */
 
     // Method to assign a trainer to a member
     public void assignTrainerToMember(int trainerId, int memberId) throws ClassNotFoundException {
