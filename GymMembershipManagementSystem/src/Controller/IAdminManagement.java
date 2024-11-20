@@ -15,7 +15,10 @@ public interface IAdminManagement {
 
     void createMembership(String membershipName, int durationMonths, int price, String benefit) throws ClassNotFoundException;
 
-    void updateMembership(int membershipId, String newMembershipPlan, int newPrice, int newDurationMonths) throws ClassNotFoundException;
+    void updateMembership(int membershipId, String newMembershipPlan, int newDurationMonths, int newPrice, String newBenefit) throws ClassNotFoundException;
 
     void deleteMembership(int membershipID) throws ClassNotFoundException;
+    
+    //////////////////////////////////////////////////////////////////////
+    
 }

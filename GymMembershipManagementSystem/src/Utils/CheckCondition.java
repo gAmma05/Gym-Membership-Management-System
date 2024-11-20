@@ -15,21 +15,22 @@ import java.sql.SQLException;
  *
  * @author gAmma
  */
-public class Verification {
-    public String checkRole(String username) throws ClassNotFoundException{
-        try(Connection con = ConnectToSQLServer.getConnection()){
-            String query = "SELECT role FROM Users WHERE username = ?";
+public class CheckCondition {
+
+    public boolean membershipIDCheck(int membershipID) throws ClassNotFoundException {
+        String query = "SELECT COUNT(*) FROM MembershipPlan WHERE membershipID = ?";
+        try (Connection con = ConnectToSQLServer.getConnection()) {
             PreparedStatement ps = con.prepareStatement(query);
             
-            ps.setString(1, username);
+            ps.setInt(1, membershipID);
             ResultSet rs = ps.executeQuery();
             
             if(rs.next()){
-                return rs.getString("role");
+                return rs.getInt(1) > 0;
             }
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }
-        return null;
+        return false;
     }
 }

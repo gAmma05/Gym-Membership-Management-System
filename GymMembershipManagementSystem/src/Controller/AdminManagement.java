@@ -10,7 +10,7 @@ public class AdminManagement implements IAdminManagement {
     // Method to create a new membership plan
     @Override
     public void createMembership(String membershipName, int duration, int price, String benefit) throws ClassNotFoundException {
-        String query = "INSERT INTO Membership_Plan (membershipName, durationMonths, price, benefit) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO MembershipPlan (membershipName, durationMonths, price, benefit) VALUES (?, ?, ?, ?)";
         try (Connection con = ConnectToSQLServer.getConnection();
              PreparedStatement pstmt = con.prepareStatement(query)) {
              
@@ -28,15 +28,16 @@ public class AdminManagement implements IAdminManagement {
     
     // Method to update a membership name and price
     @Override
-    public void updateMembership(int membershipId, String newMembershipName, int newPrice, int newDurationMonths) throws ClassNotFoundException {
-    String query = "UPDATE Membership_Plan SET membershipName = ?, price = ?, durationMonths = ? WHERE membership_ID = ?";
+    public void updateMembership(int membershipId, String newMembershipName, int newPrice, int newDurationMonths, String newBenefit) throws ClassNotFoundException {
+    String query = "UPDATE MembershipPlan SET membershipName = ?, price = ?, durationMonths = ?, benefit = ? WHERE membershipID = ?";
     try (Connection con = ConnectToSQLServer.getConnection();
          PreparedStatement pstmt = con.prepareStatement(query)) {
 
         pstmt.setString(1, newMembershipName);
         pstmt.setInt(2, newPrice);  
         pstmt.setInt(3, newDurationMonths);  
-        pstmt.setInt(4, membershipId);
+        pstmt.setString(4, newBenefit);
+        pstmt.setInt(5, membershipId);
 
         pstmt.executeUpdate();
         System.out.println("Membership updated successfully.");
@@ -49,7 +50,7 @@ public class AdminManagement implements IAdminManagement {
     // Method to delete a membership
     @Override
     public void deleteMembership(int membershipId) throws ClassNotFoundException {
-        String query = "DELETE FROM Membership_Plan WHERE membership_ID = ?";
+        String query = "DELETE FROM MembershipPlan WHERE membershipID = ?";
         try (Connection con = ConnectToSQLServer.getConnection();
              PreparedStatement pstmt = con.prepareStatement(query)) {
              
@@ -100,7 +101,7 @@ public class AdminManagement implements IAdminManagement {
     // Method to assign a trainer to a member
     public void assignTrainerToMember(int trainerId, int memberId) throws ClassNotFoundException {
         String query = "INSERT INTO TrainingSession (TrainerID, MemberID) VALUES (?, ?)";
-        try (Connection con = new ConnectToSQLServer().getConnection();
+        try (Connection con = ConnectToSQLServer.getConnection();
              PreparedStatement pstmt = con.prepareStatement(query)) {
              
             pstmt.setInt(1, trainerId);
@@ -115,7 +116,7 @@ public class AdminManagement implements IAdminManagement {
     // Method to schedule a training session
     public void scheduleTrainingSession(int trainerId, int memberId, String location, String sessionTime, int durationByMinutes) throws ClassNotFoundException {
         String query = "INSERT INTO TrainingSession (TrainerID, MemberID, session_time, location, durationByMinutes) VALUES (?, ?, ?, ?, ?)";
-        try (Connection con = new ConnectToSQLServer().getConnection();
+        try (Connection con = ConnectToSQLServer.getConnection();
              PreparedStatement pstmt = con.prepareStatement(query)) {
              
             pstmt.setInt(1, trainerId);
