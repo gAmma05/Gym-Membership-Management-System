@@ -28,21 +28,23 @@ public class UserRegistration {
             return false;
         }
 
-        try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:1433;databaseName=GMMS", "sa", "12345")) {
-            String query = "INSERT INTO Users (username, password, salt, email, role, phoneNumber, gender) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (Connection con = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=GMMS;encrypt=true;trustServerCertificate=true", "sa", "12345")) {
+            String query = "INSERT INTO Users (username, password, salt, name, email, role, phoneNumber, gender) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement ps = con.prepareStatement(query);
             ps.setString(1, username);
             ps.setString(2, hashedPass);
             ps.setString(3, salt);
-            ps.setString(4, email);
-            ps.setString(5, role);
-            ps.setString(6, phoneNumber);
-            ps.setString(7, gender);
+            ps.setString(4, name);
+            ps.setString(5, email);
+            ps.setString(6, role);
+            ps.setString(7, phoneNumber);
+            ps.setString(8, gender);
 
             int result = ps.executeUpdate();
             return result > 0;
         } catch (SQLException e) {
-            System.out.println("Error");
+            
+            System.out.println("Error: " + e.getMessage());
             return false;
         }
     }

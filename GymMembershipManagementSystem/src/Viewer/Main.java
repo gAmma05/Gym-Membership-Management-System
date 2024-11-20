@@ -5,6 +5,7 @@
  */
 package Viewer;
 
+import Access.LoginRegisterMenu;
 import ConnectToSQLServer.ConnectToSQLServer;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
@@ -16,17 +17,15 @@ import java.sql.SQLException;
  */
 public class Main {
     
-    public static Menu mn = new Menu();
+    public static LoginRegisterMenu lrm = new LoginRegisterMenu();
 
     public static void main(String[] args) throws ClassNotFoundException, SQLException, NoSuchAlgorithmException {
         Connection con = ConnectToSQLServer.getConnection();
         if(con != null){
             System.out.println("Connected to database successfully");
-            mn.Menu();
+            lrm.Menu();
         }else{
             System.out.println("Failed to connect to database");
         }
-        //System.out.println(con);
-
     }
 }

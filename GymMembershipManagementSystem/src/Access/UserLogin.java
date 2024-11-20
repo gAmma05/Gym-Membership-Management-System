@@ -5,13 +5,13 @@
  */
 package Access;
 
+import ConnectToSQLServer.ConnectToSQLServer;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import Utils.PasswordUtils;
-import Utils.Verification;
 import Viewer.AdminMenu;
 import java.security.NoSuchAlgorithmException;
 
@@ -21,11 +21,11 @@ import java.security.NoSuchAlgorithmException;
  */
 public class UserLogin {
 
-    Verification veri = new Verification();
 
     public boolean Login(String username, String password) throws SQLException, NoSuchAlgorithmException, ClassNotFoundException {
-        try (Connection con = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=GMMS", username, password)) {
-            String query = "SELECT password, salt FROM Users WHERE username = ?";
+        String role;
+        try (Connection con = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=GMMS;encrypt=true;trustServerCertificate=true", "sa", "12345")) {
+            String query = "SELECT password, salt, role FROM Users WHERE username = ?";
             PreparedStatement ps = con.prepareStatement(query);
 
             ps.setString(1, username);
@@ -34,12 +34,12 @@ public class UserLogin {
             if (result.next()) {
                 String storedHashedPassword = result.getString("password");
                 String salt = result.getString("salt");
-                String role = result.getString("role");
+                role = result.getString("role");
                 String hashedInputPassword = PasswordUtils.hashPassword(password, salt);
                 if (storedHashedPassword.equals(hashedInputPassword)) {
                     System.out.println("Login successfully!");
                     //System.out.println("Your role is: "+ role);
-                    String rs = veri.checkRole(username);
+                    //String rs = veri.checkRole(username);
                     return true;
                 } else {
                     System.out.println("Incorrect password");
@@ -52,23 +52,6 @@ public class UserLogin {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
-        }
-    }
-
-    private void GrantAccess(String role) {
-        switch (role) {
-            case "Admin":
-                AdminMenu ad = new AdminMenu();
-                ad.AdminMenu();
-                break;
-
-            case "Member":
-
-                break;
-
-            case "Trainer":
-
-                break;
         }
     }
 

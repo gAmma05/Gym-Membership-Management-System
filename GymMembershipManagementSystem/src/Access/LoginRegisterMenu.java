@@ -3,12 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Viewer;
+package Access;
 
 import Access.UserLogin;
 import Access.UserRegistration;
 import Utils.PasswordCheck;
 import Utils.Validation;
+import Utils.Verification;
+import Viewer.AdminMenu;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
@@ -18,18 +20,21 @@ import java.sql.SQLException;
  */
 public class LoginRegisterMenu {
 
-    public UserLogin ul = new UserLogin();
-    public UserRegistration ur = new UserRegistration();
+    UserLogin ul = new UserLogin();
+    UserRegistration ur = new UserRegistration();
+    Verification veri = new Verification();
+    AdminMenu admin = new AdminMenu();
+
+    public String currentUser;
 
     public void Menu() throws NoSuchAlgorithmException, SQLException, ClassNotFoundException {
-        int option = 0;
+        int option;
         do {
             System.out.println("WELCOME TO KIVOTOS GYM");
             System.out.println("1. Login");
             System.out.println("2. Register");
             System.out.println("3. Exit");
-            System.out.print("Your option: ");
-            option = Validation.checkInt("");
+            option = Validation.checkInt("Your option: ");
             switch (option) {
                 case 1:
                     Login();
@@ -56,7 +61,7 @@ public class LoginRegisterMenu {
 
         System.out.print("Password: ");
         String password = Validation.checkString("");
-        
+
         /*
         String yn = "";
         do {
@@ -68,10 +73,14 @@ public class LoginRegisterMenu {
                 }
             }
         } while (PasswordCheck.checkLength(password) && yn.equalsIgnoreCase("y"));
-        */
-        
+         */
         if (ul.Login(username, password)) {
-            
+            currentUser = username;
+            if (veri.checkRole(username).equalsIgnoreCase("Admin")) {
+                admin.adMenu(currentUser);
+            }
+        } else {
+            System.out.println("Wrong username or password. Try again");
         }
     }
 
@@ -99,7 +108,9 @@ public class LoginRegisterMenu {
             System.out.println("Choose role!");
             System.out.println("1. Member");
             System.out.println("2. Trainer");
-            System.out.println("Your option (1 | 2): ");
+            System.out.println("3. Admin");
+            System.out.println("4. Exit");
+            System.out.print("Your option (1 | 2 | 3 | 4): ");
             roleChoice = Validation.checkInt("");
             switch (roleChoice) {
                 case 1:
@@ -110,46 +121,63 @@ public class LoginRegisterMenu {
                     role = "Trainer";
                     break;
 
-                default:
-                    System.out.println("Invalid input! Try again!");
-                    break;
-            }
-        } while (roleChoice != 1 && roleChoice != 2);
-
-        String gender = "";
-        int genderChoice = 0;
-
-        do {
-            System.out.println("Choose gender!");
-            System.out.println("1. Male");
-            System.out.println("2. Female");
-            System.out.println("Your option (1 | 2): ");
-            genderChoice = Validation.checkInt("");
-            switch (genderChoice) {
-                case 1:
-                    role = "Male";
+                case 3:
+                    String ans = Validation.checkString("Tell me! What is this project developer's student code: ");
+                    if (ans.equals("SE192605")) {
+                        role = "Admin";
+                    } else {
+                        System.out.println("Sorry but you're wrong! Access denied");
+                    }
                     break;
 
-                case 2:
-                    role = "Female";
+                case 0:
+
                     break;
 
                 default:
                     System.out.println("Invalid input! Try again!");
                     break;
-
             }
-        } while (genderChoice != 1 && genderChoice != 2);
+        } while (roleChoice != 1 && roleChoice != 2 && roleChoice != 3);
 
-        String phoneNumber;
-        do {
-            System.out.print("Phone number (length > 6): ");
-            phoneNumber = Validation.checkString("");
-            if (phoneNumber.length() > 6) {
-                ur.Register(username, password, name, email, role, phoneNumber, gender);
-            } else {
-                System.out.println("Your phone number must be longer than 6! Try again");
-            }
-        } while (phoneNumber.length() <= 6);
+        if (!role.isEmpty()) {
+            String gender = "";
+            int genderChoice = 0;
+
+            do {
+                System.out.println("Choose gender!");
+                System.out.println("1. Male");
+                System.out.println("2. Female");
+                System.out.println("Your option (1 | 2): ");
+                genderChoice = Validation.checkInt("");
+                switch (genderChoice) {
+                    case 1:
+                        gender = "Male";
+                        break;
+
+                    case 2:
+                        gender = "Female";
+                        break;
+
+                    default:
+                        System.out.println("Invalid input! Try again!");
+                        break;
+
+                }
+            } while (genderChoice != 1 && genderChoice != 2);
+
+            String phoneNumber;
+            do {
+                System.out.print("Phone number (length > 6): ");
+                phoneNumber = Validation.checkString("");
+                if (phoneNumber.length() > 6) {
+                    ur.Register(username, password, name, email, role, phoneNumber, gender);
+                } else {
+                    System.out.println("Your phone number must be longer than 6! Try again");
+                }
+            } while (phoneNumber.length() <= 6);
+        } else {
+            System.out.println("The role is empty! Failed to create account");
+        }
     }
 }

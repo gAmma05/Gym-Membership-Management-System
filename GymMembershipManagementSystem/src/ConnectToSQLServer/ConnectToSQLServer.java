@@ -20,9 +20,9 @@ public class ConnectToSQLServer {
 
         Connection con = DriverManager.getConnection(connectionUrl);
         if (con != null) {
-            System.out.println("Connected to database successfully");
+            //System.out.println("Connected to database successfully");
         } else {
-            System.out.println("Failed to connect to database");
+            //System.out.println("Failed to connect to database");
         }
         return con;
     }

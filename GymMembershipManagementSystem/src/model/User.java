@@ -10,30 +10,28 @@ package model;
  * @author gAmma
  */
 public class User {
-    private int id;             
-    private String username;    
-    private String password;     
-    private String salt;        
-    private String name;        
-    private String email;       
-    private String address;     
-    private String city;        
-    private String birth;       
-    private String phoneNumber;  
-    private String gender;   
+
+    private int id;
+    private String username;
+    private String password;
+    private String salt;
+    private String name;
+    private String email;
+    private String role;
+    private String phoneNumber;
+    private String gender;
 
     public User() {
     }
 
-    public User(int id, String username, String password, String salt, String name, String email, String address, String city, String birth, String phoneNumber, String gender) {
+    public User(int id, String username, String password, String salt, String name, String email, String role, String phoneNumber, String gender) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.salt = salt;
         this.name = name;
         this.email = email;
-        this.address = address;
-        this.birth = birth;
+        this.role = role;
         this.phoneNumber = phoneNumber;
         this.gender = gender;
     }
@@ -86,20 +84,12 @@ public class User {
         this.email = email;
     }
 
-    public String getAddress() {
-        return address;
+    public String getRole() {
+        return role;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getBirth() {
-        return birth;
-    }
-
-    public void setBirth(String birth) {
-        this.birth = birth;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getPhoneNumber() {
@@ -120,9 +110,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", username=" + username + ", password=" + password + ", salt=" + salt + ", name=" + name + ", email=" + email + ", address=" + address + ", city=" + city + ", birth=" + birth + ", phoneNumber=" + phoneNumber + ", gender=" + gender + '}';
+        return "User{" + "id=" + id + ", username=" + username + ", password=" + password + ", salt=" + salt + ", name=" + name + ", email=" + email + ", role=" + role + ", phoneNumber=" + phoneNumber + ", gender=" + gender + '}';
     }
-    
-    
-    
+
 }

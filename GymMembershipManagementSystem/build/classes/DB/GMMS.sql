@@ -13,6 +13,7 @@ GO
 USE GMMS;
 GO
 
+
 -- Drop tables if they exist to avoid conflicts
 IF OBJECT_ID('dbo.Users', 'U') IS NOT NULL DROP TABLE dbo.Users;
 IF OBJECT_ID('dbo.Membership_Plan', 'U') IS NOT NULL DROP TABLE dbo.Membership_Plan;
@@ -24,6 +25,7 @@ IF OBJECT_ID('dbo.MemberProgress', 'U') IS NOT NULL DROP TABLE dbo.MemberProgres
 IF OBJECT_ID('dbo.Payment', 'U') IS NOT NULL DROP TABLE dbo.Payment;
 GO
 
+
 -- Create Users table
 CREATE TABLE Users (
     id INT IDENTITY(1,1) PRIMARY KEY,
@@ -33,14 +35,14 @@ CREATE TABLE Users (
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     role VARCHAR(20) NOT NULL,
-    phoneNumber NVARCHAR(9),
+    phoneNumber NVARCHAR(20),
     gender NVARCHAR(10) CHECK (gender IN ('Male', 'Female'))
 );
 GO
 
--- Create Membership_Plan table
-CREATE TABLE Membership_Plan (
-    membership_ID INT IDENTITY(1,1) PRIMARY KEY,
+-- Create MembershipPlan table
+CREATE TABLE MembershipPlan (
+    membershipID INT IDENTITY(1,1) PRIMARY KEY,
     membershipName NVARCHAR(10),
     durationMonths INT CHECK (durationMonths > 0),
     price INT CHECK (price > 0),
@@ -50,25 +52,24 @@ GO
 
 -- Create Admin table
 CREATE TABLE Admin (
-    admin_id INT PRIMARY KEY,
-    FOREIGN KEY(admin_id) REFERENCES Users(id)
+    adminID INT PRIMARY KEY,
+    FOREIGN KEY(adminID) REFERENCES Users(id)
 );
 GO
 
 -- Create Member table
 CREATE TABLE Member (
-    member_id INT PRIMARY KEY,
-    FOREIGN KEY(member_id) REFERENCES Users(id),
-    msID INT FOREIGN KEY REFERENCES Membership_Plan(membership_ID),
-    joinDate DATE,
-    expiredDate DATE
+    memberID INT PRIMARY KEY,
+    FOREIGN KEY(memberID) REFERENCES Users(id),
+    msID INT FOREIGN KEY REFERENCES MembershipPlan(membershipID),
+    joinDate DATE
 );
 GO
 
 -- Create Trainer table
 CREATE TABLE Trainer (
-    trainer_id INT PRIMARY KEY,
-    FOREIGN KEY(trainer_id) REFERENCES Users(id),
+    trainerID INT PRIMARY KEY,
+    FOREIGN KEY(trainerID) REFERENCES Users(id),
     expYear INT
 );
 GO
@@ -76,9 +77,9 @@ GO
 -- Create TrainingSession table
 CREATE TABLE TrainingSession (
     sessionID INT PRIMARY KEY IDENTITY(1,1),
-    TrainerID INT FOREIGN KEY REFERENCES Trainer(trainer_id),
-    MemberID INT FOREIGN KEY REFERENCES Member(member_id),
-    session_time DATETIME,
+    trainerID INT FOREIGN KEY REFERENCES Trainer(trainerID),
+    memberID INT FOREIGN KEY REFERENCES Member(memberID),
+    sessionTime DATETIME,
     location VARCHAR(50),
     durationByMinutes INT
 );
@@ -86,20 +87,20 @@ GO
 
 -- Create MemberProgress table
 CREATE TABLE MemberProgress (
-    ProgressID INT PRIMARY KEY IDENTITY(1,1),
-    MemberID INT FOREIGN KEY REFERENCES Member(member_id),
-    Date DATE,
-    WorkoutHistory TEXT,
-    HealthMetrics VARCHAR(255)
+    progressID INT PRIMARY KEY IDENTITY(1,1),
+    memberID INT FOREIGN KEY REFERENCES Member(memberID),
+    dateCreated DATE,
+    workoutHistory TEXT,
+    healthMetrics VARCHAR(255)
 );
 GO
 
 -- Create Payment table
 CREATE TABLE Payment (
-    payment_ID INT,
-    Member_ID INT,
-    FOREIGN KEY(Member_ID) REFERENCES Member(member_id) ON DELETE CASCADE,
-    payment_Date DATE DEFAULT GETDATE(),
+    paymentID INT,
+    memberID INT,
+    FOREIGN KEY(memberID) REFERENCES Member(memberID) ON DELETE CASCADE,
+    paymentDate DATE DEFAULT GETDATE(),
     renewalDate DATE
 );
 GO
