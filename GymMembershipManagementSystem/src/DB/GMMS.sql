@@ -60,6 +60,7 @@ GO
 -- Create Member table
 CREATE TABLE Member (
     memberID INT PRIMARY KEY,
+    memberName VARCHAR(255) FOREIGN KEY REFERENCES Users(name),
     FOREIGN KEY(memberID) REFERENCES Users(id),
     msID INT FOREIGN KEY REFERENCES MembershipPlan(membershipID),
     joinDate DATE
@@ -89,6 +90,7 @@ GO
 CREATE TABLE MemberProgress (
     progressID INT PRIMARY KEY IDENTITY(1,1),
     memberID INT FOREIGN KEY REFERENCES Member(memberID),
+    memberName VARCHAR(255) FOREIGN KEY REFERENCES Member(memberName),
     dateCreated DATE,
     workoutHistory TEXT,
     healthMetrics VARCHAR(255)

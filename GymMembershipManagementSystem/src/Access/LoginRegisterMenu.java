@@ -78,6 +78,10 @@ public class LoginRegisterMenu {
             currentUser = username;
             if (veri.checkRole(username).equalsIgnoreCase("Admin")) {
                 admin.adMenu(currentUser);
+            } else if (veri.checkRole(username).equalsIgnoreCase("Member")) {
+                //Access to member menu
+            } else if (veri.checkRole(username).equalsIgnoreCase("Trainer")) {
+                //Access to trainer menu
             }
         } else {
             System.out.println("Wrong username or password. Try again");

@@ -49,9 +49,8 @@ public class AdminManagementMenu {
                     deleteMembership();
                     break;
 
-                case 0:
-
-                    break;
+                case 4:
+                    return;
 
                 default:
                     System.out.println("Invalid input");
@@ -72,7 +71,7 @@ public class AdminManagementMenu {
             System.out.println("2. Show member's list");
             System.out.println("3. Assign members to trainer");
             System.out.println("4. Exit");
-            
+
             option = Validation.checkInt("Your option: ");
 
             switch (option) {
@@ -85,7 +84,7 @@ public class AdminManagementMenu {
                     break;
 
                 case 3:
-                    
+
                     break;
 
                 case 4:
@@ -105,6 +104,10 @@ public class AdminManagementMenu {
     }
 
     public void showMemberProgress() {
+
+    }
+
+    public void Settings() {
 
     }
 

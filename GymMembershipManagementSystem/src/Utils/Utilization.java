@@ -18,7 +18,7 @@ import java.sql.SQLException;
 public class Utilization {
 
     public String showMembershipPlanList() throws ClassNotFoundException {
-        String query = "SELECT mp.membershipID, membershipName, durationMonths, price, benefit FROM MembershipPlan mp";
+        String query = "SELECT membershipID, membershipName, durationMonths, price, benefit FROM MembershipPlan ";
         try (Connection con = ConnectToSQLServer.getConnection()) {
             PreparedStatement ps = con.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
@@ -34,7 +34,6 @@ public class Utilization {
                         membershipID, membershipName, durationMonths, price, benefit);
             }
 
-            
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -42,24 +41,30 @@ public class Utilization {
     }
 
     public void showMemberList() throws ClassNotFoundException {
-        String query = "SELECT m.memberID, mp.membershipName, m.joinDate "
+        String query = "SELECT m.memberID, u.name AS [Member Name], mp.membershipName AS [Membership Plan], m.joinDate "
                 + "FROM Member m "
-                + "INNER JOIN MembershipPlan mp ON m.msID = mp.membershipID";
+                + "INNER JOIN MembershipPlan mp ON m.msID = mp.membershipID "
+                + "INNER JOIN Users u ON m.memberName = u.name "
+                + "ORDER BY m.memberID;";
+
+        boolean hasResults = false;
 
         try (Connection con = ConnectToSQLServer.getConnection()) {
             PreparedStatement ps = con.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
+                hasResults = true;
                 int memberID = rs.getInt("memberID");
-                String membershipName = rs.getString("membershipName");
+                String memberName = rs.getString("Member Name");
+                String membershipName = rs.getString("Membership Name");
                 String joinDate = rs.getString("joinDate");
 
-                System.out.printf("%-10d - %-20s - %-15s%n",
-                        memberID, membershipName, joinDate);
+                System.out.printf("%-10d - %-20s - %-20s - %-15s%n",
+                        memberID, memberName, membershipName, joinDate);
             }
 
-            if (!rs.next()) {
+            if (!hasResults) {
                 System.out.println("The list is empty");
             }
         } catch (SQLException e) {
@@ -81,6 +86,31 @@ public class Utilization {
 
             if (!rs.next()) {
                 System.out.println("The list is empty");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void showMemberProgress() throws ClassNotFoundException {
+        String query = "SELECT mpr.progressID, m.memberName [Member Name], mpr.dateCreated, mpr.workoutHistory, mpr.healthMetrics "
+                + "FROM MemberProgress mpr "
+                + "INNER JOIN Member m ON mpr.memberID = m.memberID "
+                + "INNER JOIN Member m ON mpr.memberName = m.memberName"
+                + "ORDER BY mpr.progressID";
+        try (Connection con = ConnectToSQLServer.getConnection()) {
+            PreparedStatement ps = con.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int progressID = rs.getInt("progressID");
+                String memberName = rs.getString("Member Name");
+                String dateCreated = rs.getString("dateCreated");
+                String workoutHistory = rs.getString("workoutHistory");
+                String healthMetrics = rs.getString("healthMetrics");
+
+                System.out.printf("%-10d - %-20s - %-7s - %-30s - %15%n",
+                        progressID, memberName, dateCreated, workoutHistory, healthMetrics);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
