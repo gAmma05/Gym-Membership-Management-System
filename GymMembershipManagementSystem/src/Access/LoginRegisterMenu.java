@@ -5,8 +5,7 @@
  */
 package Access;
 
-import Access.UserLogin;
-import Access.UserRegistration;
+import Utils.CheckCondition;
 import Utils.PasswordCheck;
 import Utils.Validation;
 import Utils.Verification;
@@ -24,6 +23,7 @@ public class LoginRegisterMenu {
     UserRegistration ur = new UserRegistration();
     Verification veri = new Verification();
     AdminMenu admin = new AdminMenu();
+    CheckCondition cc = new CheckCondition();
 
     public String currentUser;
 
@@ -88,25 +88,26 @@ public class LoginRegisterMenu {
         }
     }
 
-    private void Register() throws NoSuchAlgorithmException, SQLException {
-        System.out.print("Username: ");
-        String username = Validation.checkString("");
+    private void Register() throws NoSuchAlgorithmException, SQLException, ClassNotFoundException {
+        String username = Validation.checkString("Username: ");
+        if (cc.usernameCheck(username)) {
+            System.out.println("The username is already used");
+            return;
+        }
 
-        System.out.print("Password: ");
-        String password = Validation.checkString("");
+        String password = Validation.checkString("Password: ");
         if (PasswordCheck.checkLength(password)) {
             System.out.println("Password must be longer than 6 characters");
             return;
         }
 
-        System.out.print("Fullname: ");
-        String name = Validation.checkString("");
+        String name = Validation.checkString("Fullname: ");
 
-        System.out.print("Email: ");
-        String email = Validation.checkString("");
+        String email = Validation.checkString("Email: ");
 
         String role = "";
         int roleChoice = 0;
+        int userID = -1;
 
         do {
             System.out.println("Choose role!");
@@ -131,10 +132,11 @@ public class LoginRegisterMenu {
                         role = "Admin";
                     } else {
                         System.out.println("Sorry but you're wrong! Access denied");
+                        return;
                     }
                     break;
 
-                case 0:
+                case 4:
 
                     break;
 
@@ -152,8 +154,7 @@ public class LoginRegisterMenu {
                 System.out.println("Choose gender!");
                 System.out.println("1. Male");
                 System.out.println("2. Female");
-                System.out.println("Your option (1 | 2): ");
-                genderChoice = Validation.checkInt("");
+                genderChoice = Validation.checkInt("Your option (1 | 2): ");
                 switch (genderChoice) {
                     case 1:
                         gender = "Male";
@@ -172,14 +173,29 @@ public class LoginRegisterMenu {
 
             String phoneNumber;
             do {
-                System.out.print("Phone number (length > 6): ");
-                phoneNumber = Validation.checkString("");
+                phoneNumber = Validation.checkString("Phone number (length > 6): ");
                 if (phoneNumber.length() > 6) {
-                    ur.Register(username, password, name, email, role, phoneNumber, gender);
+                    userID = ur.Register(username, password, name, email, role, phoneNumber, gender);
                 } else {
                     System.out.println("Your phone number must be longer than 6! Try again");
                 }
             } while (phoneNumber.length() <= 6);
+
+            switch (role) {
+                case "Member":
+                    ur.memberRegister(userID, name, gender);
+                    break;
+
+                case "Trainer":
+                    int expYear = Validation.checkInt("Your experience year: ");
+                    ur.trainerRegister(userID, name, gender, expYear);
+                    break;
+
+                case "Admin":
+                    ur.adminRegister(userID, name);
+                    break;
+
+            }
         } else {
             System.out.println("The role is empty! Failed to create account");
         }

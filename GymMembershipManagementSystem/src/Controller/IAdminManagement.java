@@ -21,4 +21,15 @@ public interface IAdminManagement {
     
     //////////////////////////////////////////////////////////////////////
     
+    void deleteUsers(int userID) throws ClassNotFoundException;
+    
+    void deleteAdmins(int userID) throws ClassNotFoundException;
+    
+    void deleteMembers(int userID) throws ClassNotFoundException;
+    
+    void deleteTrainers(int userID) throws ClassNotFoundException;
+    
+    //////////////////////////////////////////////////////////////////////
+    
+    
 }

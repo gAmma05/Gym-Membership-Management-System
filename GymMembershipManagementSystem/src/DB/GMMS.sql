@@ -40,6 +40,9 @@ CREATE TABLE Users (
 );
 GO
 
+DBCC CHECKIDENT ('Users', RESEED, 0);
+GO
+
 -- Create MembershipPlan table
 CREATE TABLE MembershipPlan (
     membershipID INT IDENTITY(1,1) PRIMARY KEY,
@@ -50,30 +53,42 @@ CREATE TABLE MembershipPlan (
 );
 GO
 
+DBCC CHECKIDENT ('MembershipPlan', RESEED, 0);
+GO
+
 -- Create Admin table
 CREATE TABLE Admin (
     adminID INT PRIMARY KEY,
+    adminName VARCHAR(255),
     FOREIGN KEY(adminID) REFERENCES Users(id)
 );
 GO
 
+
 -- Create Member table
 CREATE TABLE Member (
     memberID INT PRIMARY KEY,
-    memberName VARCHAR(255) FOREIGN KEY REFERENCES Users(name),
+    memberName VARCHAR(255),
     FOREIGN KEY(memberID) REFERENCES Users(id),
     msID INT FOREIGN KEY REFERENCES MembershipPlan(membershipID),
+    gender NVARCHAR(10),
     joinDate DATE
 );
 GO
 
+
 -- Create Trainer table
 CREATE TABLE Trainer (
     trainerID INT PRIMARY KEY,
+    trainerName VARCHAR(255),
     FOREIGN KEY(trainerID) REFERENCES Users(id),
-    expYear INT
+    gender NVARCHAR(10),
+    expYear INT,
+    joinDate DATE
 );
 GO
+
+-- Reset the identity column in the Trainer table
 
 -- Create TrainingSession table
 CREATE TABLE TrainingSession (
@@ -86,23 +101,32 @@ CREATE TABLE TrainingSession (
 );
 GO
 
+DBCC CHECKIDENT ('TrainingSession', RESEED, 0);
+GO
+
 -- Create MemberProgress table
 CREATE TABLE MemberProgress (
     progressID INT PRIMARY KEY IDENTITY(1,1),
     memberID INT FOREIGN KEY REFERENCES Member(memberID),
-    memberName VARCHAR(255) FOREIGN KEY REFERENCES Member(memberName),
+    memberName VARCHAR(255),
     dateCreated DATE,
     workoutHistory TEXT,
     healthMetrics VARCHAR(255)
 );
 GO
 
+DBCC CHECKIDENT ('MemberProgress', RESEED, 0);
+GO
+
 -- Create Payment table
 CREATE TABLE Payment (
-    paymentID INT,
+    paymentID INT PRIMARY KEY IDENTITY(1,1),
     memberID INT,
     FOREIGN KEY(memberID) REFERENCES Member(memberID) ON DELETE CASCADE,
     paymentDate DATE DEFAULT GETDATE(),
     renewalDate DATE
 );
+GO
+
+DBCC CHECKIDENT ('Payment', RESEED, 0);
 GO

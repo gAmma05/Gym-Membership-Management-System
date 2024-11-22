@@ -7,12 +7,10 @@ package Access;
 
 import ConnectToSQLServer.ConnectToSQLServer;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import Utils.PasswordUtils;
-import Viewer.AdminMenu;
 import java.security.NoSuchAlgorithmException;
 
 /**
@@ -23,8 +21,7 @@ public class UserLogin {
 
 
     public boolean Login(String username, String password) throws SQLException, NoSuchAlgorithmException, ClassNotFoundException {
-        String role;
-        try (Connection con = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=GMMS;encrypt=true;trustServerCertificate=true", "sa", "12345")) {
+        try (Connection con = ConnectToSQLServer.getConnection()) {
             String query = "SELECT password, salt, role FROM Users WHERE username = ?";
             PreparedStatement ps = con.prepareStatement(query);
 
@@ -34,7 +31,6 @@ public class UserLogin {
             if (result.next()) {
                 String storedHashedPassword = result.getString("password");
                 String salt = result.getString("salt");
-                role = result.getString("role");
                 String hashedInputPassword = PasswordUtils.hashPassword(password, salt);
                 if (storedHashedPassword.equals(hashedInputPassword)) {
                     System.out.println("Login successfully!");
@@ -46,7 +42,7 @@ public class UserLogin {
                     return false;
                 }
             } else {
-                System.out.println("User not found");
+                //System.out.println("User not found");
                 return false;
             }
         } catch (SQLException e) {
