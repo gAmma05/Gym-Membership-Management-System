@@ -28,7 +28,7 @@ GO
 
 -- Create Users table
 CREATE TABLE Users (
-    id INT IDENTITY(1,1) PRIMARY KEY,
+    id INT PRIMARY KEY,
     username VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     salt NVARCHAR(255) NOT NULL,
@@ -40,12 +40,9 @@ CREATE TABLE Users (
 );
 GO
 
-DBCC CHECKIDENT ('Users', RESEED, 0);
-GO
-
 -- Create MembershipPlan table
 CREATE TABLE MembershipPlan (
-    membershipID INT IDENTITY(1,1) PRIMARY KEY,
+    membershipID INT PRIMARY KEY,
     membershipName NVARCHAR(10),
     durationMonths INT CHECK (durationMonths > 0),
     price INT CHECK (price > 0),
@@ -53,8 +50,7 @@ CREATE TABLE MembershipPlan (
 );
 GO
 
-DBCC CHECKIDENT ('MembershipPlan', RESEED, 0);
-GO
+
 
 -- Create Admin table
 CREATE TABLE Admin (
@@ -92,7 +88,7 @@ GO
 
 -- Create TrainingSession table
 CREATE TABLE TrainingSession (
-    sessionID INT PRIMARY KEY IDENTITY(1,1),
+    sessionID INT PRIMARY KEY,
     trainerID INT FOREIGN KEY REFERENCES Trainer(trainerID),
     memberID INT FOREIGN KEY REFERENCES Member(memberID),
     sessionTime DATETIME,
@@ -106,7 +102,7 @@ GO
 
 -- Create MemberProgress table
 CREATE TABLE MemberProgress (
-    progressID INT PRIMARY KEY IDENTITY(1,1),
+    progressID INT PRIMARY KEY,
     memberID INT FOREIGN KEY REFERENCES Member(memberID),
     memberName VARCHAR(255),
     dateCreated DATE,
@@ -115,8 +111,6 @@ CREATE TABLE MemberProgress (
 );
 GO
 
-DBCC CHECKIDENT ('MemberProgress', RESEED, 0);
-GO
 
 -- Create Payment table
 CREATE TABLE Payment (
