@@ -6,11 +6,14 @@
 package Access;
 
 import Utils.CheckCondition;
-import Utils.PasswordCheck;
 import Utils.Validation;
 import Utils.Verification;
 import Viewer.AdminMenu;
 import Viewer.TrainerMenu;
+import java.time.LocalDate;
+import model.Admin;
+import model.Member;
+import model.Trainer;
 import model.User;
 
 /**
@@ -25,7 +28,6 @@ public class LoginRegisterMenu {
     AdminMenu admin = new AdminMenu();
     TrainerMenu trainer = new TrainerMenu();
     CheckCondition cc = new CheckCondition();
-    PasswordCheck pc = new PasswordCheck();
 
     public String currentUser;
 
@@ -57,7 +59,7 @@ public class LoginRegisterMenu {
         } while (option > 0 && option < 3);
     }
 
-    private void Login(){
+    private void Login() {
         System.out.print("Username: ");
         String username = Validation.checkString("");
 
@@ -91,7 +93,7 @@ public class LoginRegisterMenu {
         }
     }
 
-    private void Register(){
+    private void Register() {
         String username = Validation.checkString("Username: ");
         if (cc.usernameCheck(username)) {
             System.out.println("The username is already used");
@@ -99,13 +101,13 @@ public class LoginRegisterMenu {
         }
 
         String password = Validation.checkString("Password: ");
-        if (pc.checkLength(password)) {
+        if (password.length() <= 6) {
             System.out.println("Password must be longer than 6 characters");
             return;
         }
-        
+
         int id = Validation.checkInt("ID: ");
-        if(cc.userIDCheck(id)){
+        if (cc.userIDCheck(id)) {
             System.out.println("This ID is being used");
             return;
         }
@@ -184,8 +186,9 @@ public class LoginRegisterMenu {
             do {
                 phoneNumber = Validation.checkString("Phone number (length > 6): ");
                 if (phoneNumber.length() > 6) {
-                    userID = ur.Register(id, username, password, name, email, role, phoneNumber, gender);
                     User us = new User(id, username, password, name, email, role, phoneNumber, gender);
+                    userID = ur.Register(us);
+
                 } else {
                     System.out.println("Your phone number must be longer than 6! Try again");
                 }
@@ -193,16 +196,21 @@ public class LoginRegisterMenu {
 
             switch (role) {
                 case "Member":
-                    ur.memberRegister(userID, name, gender);
+                    LocalDate memJoinDate = LocalDate.now();
+                    Member mem = new Member(userID, username, password, name, email, role, phoneNumber, gender, memJoinDate, 0);
+                    ur.memberRegister(mem);
                     break;
 
                 case "Trainer":
                     int expYear = Validation.checkInt("Your experience year: ");
-                    ur.trainerRegister(userID, name, gender, expYear);
+                    LocalDate traJoinDate = LocalDate.now();
+                    Trainer tra = new Trainer(userID, username, password, name, email, role, phoneNumber, gender, traJoinDate, expYear, null);
+                    ur.trainerRegister(tra);
                     break;
 
                 case "Admin":
-                    ur.adminRegister(userID, name);
+                    Admin adm = new Admin(userID, username, password, name, email, role, phoneNumber, gender);
+                    ur.adminRegister(adm);
                     break;
 
             }
