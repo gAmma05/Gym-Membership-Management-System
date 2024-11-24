@@ -143,7 +143,7 @@ public class AdminManagementMenu {
 
             }
 
-        } while (option != 4);
+        } while (option != 7);
     }
 
     public void showMemberProgress(String currentUser) {
@@ -358,7 +358,7 @@ public class AdminManagementMenu {
         if (!cc.checkTrainingSession(sessionID)) {
             System.out.println("No ID found");
         } else {
-            int duration = cc.checkDurationOfTS(sessionID);
+            int duration = gbis.getDurationOfTS(sessionID);
             if (duration == 0) {
                 TrainingSession ts = gbil.getTSByID(sessionID);
 
@@ -387,8 +387,8 @@ public class AdminManagementMenu {
                 int trainerID = gbis.getAssignedTrainer(sessionID);
                 int memberID = gbis.getAssignedMember(sessionID);
                 am.scheduleTrainingSession(sessionID, trainerID, memberID, sessionTime, location, durationByMinutes);
-            } else if (duration < 0) {
-                System.out.println("SQL Error");
+            } else if (duration > 0) {
+                System.out.println("This session is already scheduled");
             }
         }
     }
