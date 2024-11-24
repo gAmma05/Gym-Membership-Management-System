@@ -5,6 +5,7 @@
  */
 package model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -13,26 +14,22 @@ import java.util.Date;
  */
 public class Member extends User {
 
-    private Date joinDate;
+    private LocalDate joinDate;
     private int membershipID;
 
     public Member() {
     }
 
-    public Member(int id, String username, String password, String salt,
+    public Member(int id, String username, String password,
             String name, String email, String role, String phoneNumber, String gender,
-            Date joinDate, int membershipID) {
+            LocalDate joinDate, int membershipID) {
         super(id, username, password, name, email, role, phoneNumber, gender);
         this.joinDate = joinDate;
         this.membershipID = membershipID;
     }
 
-    public Date getJoinDate() {
+    public LocalDate getJoinDate() {
         return joinDate;
-    }
-
-    public void setJoinDate(Date joinDate) {
-        this.joinDate = joinDate;
     }
 
     public int getMembershipID() {
