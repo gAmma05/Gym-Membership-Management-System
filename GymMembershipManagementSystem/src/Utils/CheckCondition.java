@@ -75,7 +75,26 @@ public class CheckCondition {
     }
 
     public boolean checkMemberAssigned(int userID) {
-        String query = "SELECT trainerID FROM TrainingSession WHERE memberID = ?";
+        String query = "SELECT COUNT(*) FROM TrainingSession WHERE memberID = ?";
+        try (Connection con = ConnectToSQLServer.getConnection()) {
+            PreparedStatement ps = con.prepareStatement(query);
+
+            ps.setInt(1, userID);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } catch (ClassNotFoundException classE) {
+            System.out.println("Class not found: " + classE.getMessage());
+        }
+        return false;
+    }
+    
+    public boolean checkTrainerAssigned(int userID) {
+        String query = "SELECT COUNT(*) FROM TrainingSession WHERE trainerID = ?";
         try (Connection con = ConnectToSQLServer.getConnection()) {
             PreparedStatement ps = con.prepareStatement(query);
 
