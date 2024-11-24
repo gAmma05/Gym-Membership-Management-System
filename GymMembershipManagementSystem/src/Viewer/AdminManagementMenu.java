@@ -339,15 +339,21 @@ public class AdminManagementMenu {
             System.out.println("This session is being used");
         } else {
             int memberID = Validation.checkInt("Insert member ID to be assigned: ");
-            if (cc.checkMemberAssigned(memberID)) {
+            if (!cc.userIDCheck(memberID)) {
+                System.out.println("This member ID is not found");
+            } else if (cc.checkMemberAssigned(memberID)) {
                 System.out.println("This member ID has been already assigned");
             } else {
                 int trainerID = Validation.checkInt("Insert Trainer ID to assign " + memberID + ": ");
                 if (!cc.userIDCheck(trainerID)) {
                     System.out.println("No ID found");
                 } else {
-                    TrainingSession ts = new TrainingSession(sessionID, trainerID, memberID, null, "N/A", 0);
-                    am.assignTrainerToMember(ts);
+                    if (cc.checkTrainerAssigned(trainerID)) {
+                        System.out.println("This trainer is currently assigning other member");
+                    } else {
+                        TrainingSession ts = new TrainingSession(sessionID, trainerID, memberID, null, "N/A", 0);
+                        am.assignTrainerToMember(ts);
+                    }
                 }
             }
         }
