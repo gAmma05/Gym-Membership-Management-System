@@ -14,7 +14,6 @@ public class User {
     private int id;
     private String username;
     private String password;
-    private String salt;
     private String name;
     private String email;
     private String role;
@@ -28,7 +27,6 @@ public class User {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.salt = salt;
         this.name = name;
         this.email = email;
         this.role = role;
@@ -102,7 +100,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", username=" + username + ", password=" + password +   ", name=" + name + ", email=" + email + ", role=" + role + ", phoneNumber=" + phoneNumber + ", gender=" + gender + '}';
+        return "User{" + "id=" + id + ", username=" + username + ", password=" + password + ", name=" + name + ", email=" + email + ", role=" + role + ", phoneNumber=" + phoneNumber + ", gender=" + gender + '}';
     }
 
 }
