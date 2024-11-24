@@ -12,13 +12,28 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/Admin/Downloads/fcodeCodingProject/GymMembershipManagementSystem/src/model/Member.java</file>
+            <file>file:/C:/Users/Admin/Downloads/fcodeCodingProject/GymMembershipManagementSystem/src/Viewer/AdminMenu.java</file>
+            <file>file:/C:/Users/Admin/Downloads/fcodeCodingProject/GymMembershipManagementSystem/src/Controller/TrainerManagement.java</file>
+            <file>file:/C:/Users/Admin/Downloads/fcodeCodingProject/GymMembershipManagementSystem/src/DB/GMMS.sql</file>
+            <file>file:/C:/Users/Admin/Downloads/fcodeCodingProject/GymMembershipManagementSystem/src/Utils/Validation.java</file>
+            <file>file:/C:/Users/Admin/Downloads/fcodeCodingProject/GymMembershipManagementSystem/src/Viewer/MemberManagementMenu.java</file>
+            <file>file:/C:/Users/Admin/Downloads/fcodeCodingProject/GymMembershipManagementSystem/src/model/Admin.java</file>
+            <file>file:/C:/Users/Admin/Downloads/fcodeCodingProject/GymMembershipManagementSystem/src/Controller/MemberManagement.java</file>
+            <file>file:/C:/Users/Admin/Downloads/fcodeCodingProject/GymMembershipManagementSystem/src/Viewer/TrainerMenu.java</file>
             <file>file:/C:/Users/Admin/Downloads/fcodeCodingProject/GymMembershipManagementSystem/src/Access/UserLogin.java</file>
             <file>file:/C:/Users/Admin/Downloads/fcodeCodingProject/GymMembershipManagementSystem/src/Access/LoginRegisterMenu.java</file>
             <file>file:/C:/Users/Admin/Downloads/fcodeCodingProject/GymMembershipManagementSystem/src/Viewer/AdminManagementMenu.java</file>
-            <file>file:/C:/Users/Admin/Downloads/fcodeCodingProject/GymMembershipManagementSystem/src/Viewer/AdminMenu.java</file>
+            <file>file:/C:/Users/Admin/Downloads/fcodeCodingProject/GymMembershipManagementSystem/src/Utils/GetByIDSQL.java</file>
+            <file>file:/C:/Users/Admin/Downloads/fcodeCodingProject/GymMembershipManagementSystem/src/Utils/CheckCondition.java</file>
+            <file>file:/C:/Users/Admin/Downloads/fcodeCodingProject/GymMembershipManagementSystem/src/Utils/Verification.java</file>
             <file>file:/C:/Users/Admin/Downloads/fcodeCodingProject/GymMembershipManagementSystem/src/Viewer/Main.java</file>
             <file>file:/C:/Users/Admin/Downloads/fcodeCodingProject/GymMembershipManagementSystem/src/Access/UserRegistration.java</file>
+            <file>file:/C:/Users/Admin/Downloads/fcodeCodingProject/GymMembershipManagementSystem/src/Utils/GetByIDList.java</file>
+            <file>file:/C:/Users/Admin/Downloads/fcodeCodingProject/GymMembershipManagementSystem/src/Controller/IAdminManagement.java</file>
+            <file>file:/C:/Users/Admin/Downloads/fcodeCodingProject/GymMembershipManagementSystem/src/Viewer/MemberMenu.java</file>
             <file>file:/C:/Users/Admin/Downloads/fcodeCodingProject/GymMembershipManagementSystem/src/Controller/AdminManagement.java</file>
+            <file>file:/C:/Users/Admin/Downloads/fcodeCodingProject/GymMembershipManagementSystem/src/Utils/PasswordCheck.java</file>
         </group>
     </open-files>
 </project-private>

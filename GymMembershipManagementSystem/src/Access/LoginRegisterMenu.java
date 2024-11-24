@@ -10,8 +10,8 @@ import Utils.PasswordCheck;
 import Utils.Validation;
 import Utils.Verification;
 import Viewer.AdminMenu;
-import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
+import Viewer.TrainerMenu;
+import model.User;
 
 /**
  *
@@ -23,11 +23,13 @@ public class LoginRegisterMenu {
     UserRegistration ur = new UserRegistration();
     Verification veri = new Verification();
     AdminMenu admin = new AdminMenu();
+    TrainerMenu trainer = new TrainerMenu();
     CheckCondition cc = new CheckCondition();
+    PasswordCheck pc = new PasswordCheck();
 
     public String currentUser;
 
-    public void Menu() throws NoSuchAlgorithmException, SQLException, ClassNotFoundException {
+    public void Menu() {
         int option;
         do {
             System.out.println("WELCOME TO KIVOTOS GYM");
@@ -55,7 +57,7 @@ public class LoginRegisterMenu {
         } while (option > 0 && option < 3);
     }
 
-    private void Login() throws SQLException, NoSuchAlgorithmException, ClassNotFoundException {
+    private void Login(){
         System.out.print("Username: ");
         String username = Validation.checkString("");
 
@@ -82,13 +84,14 @@ public class LoginRegisterMenu {
                 //Access to member menu
             } else if (veri.checkRole(username).equalsIgnoreCase("Trainer")) {
                 //Access to trainer menu
+                trainer.trMenu(currentUser);
             }
         } else {
             System.out.println("Wrong username or password. Try again");
         }
     }
 
-    private void Register() throws NoSuchAlgorithmException, SQLException, ClassNotFoundException {
+    private void Register(){
         String username = Validation.checkString("Username: ");
         if (cc.usernameCheck(username)) {
             System.out.println("The username is already used");
@@ -96,8 +99,14 @@ public class LoginRegisterMenu {
         }
 
         String password = Validation.checkString("Password: ");
-        if (PasswordCheck.checkLength(password)) {
+        if (pc.checkLength(password)) {
             System.out.println("Password must be longer than 6 characters");
+            return;
+        }
+        
+        int id = Validation.checkInt("ID: ");
+        if(cc.userIDCheck(id)){
+            System.out.println("This ID is being used");
             return;
         }
 
@@ -175,7 +184,8 @@ public class LoginRegisterMenu {
             do {
                 phoneNumber = Validation.checkString("Phone number (length > 6): ");
                 if (phoneNumber.length() > 6) {
-                    userID = ur.Register(username, password, name, email, role, phoneNumber, gender);
+                    userID = ur.Register(id, username, password, name, email, role, phoneNumber, gender);
+                    User us = new User(id, username, password, name, email, role, phoneNumber, gender);
                 } else {
                     System.out.println("Your phone number must be longer than 6! Try again");
                 }

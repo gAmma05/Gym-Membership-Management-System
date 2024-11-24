@@ -5,7 +5,9 @@
  */
 package Controller;
 
-import model.Member;
+import java.time.LocalDateTime;
+import model.MembershipPlan;
+import model.TrainingSession;
 
 /**
  *
@@ -13,23 +15,25 @@ import model.Member;
  */
 public interface IAdminManagement {
 
-    void createMembership(String membershipName, int durationMonths, int price, String benefit) throws ClassNotFoundException;
+    void createMembership(MembershipPlan mp);
 
-    void updateMembership(int membershipId, String newMembershipPlan, int newDurationMonths, int newPrice, String newBenefit) throws ClassNotFoundException;
+    void updateMembership(int membershipID, String newMembershipPlan, int newDurationMonths, int newPrice, String newBenefit);
 
-    void deleteMembership(int membershipID) throws ClassNotFoundException;
-    
+    void deleteMembership(int membershipID);
+
     //////////////////////////////////////////////////////////////////////
-    
-    void deleteUsers(int userID) throws ClassNotFoundException;
-    
-    void deleteAdmins(int userID) throws ClassNotFoundException;
-    
-    void deleteMembers(int userID) throws ClassNotFoundException;
-    
-    void deleteTrainers(int userID) throws ClassNotFoundException;
-    
+    void deleteUsers(int userID);
+
+    void deleteAdmins(int userID);
+
+    void deleteMembers(int userID);
+
+    void deleteTrainers(int userID);
+
     //////////////////////////////////////////////////////////////////////
-    
-    
+    void assignTrainerToMember(TrainingSession ts);
+
+    void scheduleTrainingSession(int sessionID, int trainerID, int memberID, LocalDateTime sessionTime, String location, int durationByMinutes);
+
+    void deleteTrainingSession(int sessionID);
 }

@@ -6,11 +6,9 @@
 package Access;
 
 import ConnectToSQLServer.ConnectToSQLServer;
-import Utils.PasswordUtils;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,22 +20,14 @@ import java.time.LocalDate;
  */
 public class UserRegistration {
 
-    public int Register(String username, String password, String name, String email, String role, String phoneNumber, String gender) throws NoSuchAlgorithmException, SQLException, ClassNotFoundException {
-        String salt = PasswordUtils.generateSalt();
-        String hashedPass;
-        try {
-            hashedPass = PasswordUtils.hashPassword(password, salt);
-        } catch (NoSuchAlgorithmException e) {
-            System.out.println("Fail to hash password");
-            return -1;
-        }
+    public int Register(int id, String username, String password, String name, String email, String role, String phoneNumber, String gender) {
 
         try (Connection con = ConnectToSQLServer.getConnection()) {
-            String query = "INSERT INTO Users (username, password, salt, name, email, role, phoneNumber, gender) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO Users (id, username, password, name, email, role, phoneNumber, gender) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement ps = con.prepareStatement(query);
-            ps.setString(1, username);
-            ps.setString(2, hashedPass);
-            ps.setString(3, salt);
+            ps.setInt(1, id);
+            ps.setString(2, username);
+            ps.setString(3, password);
             ps.setString(4, name);
             ps.setString(5, email);
             ps.setString(6, role);
@@ -58,12 +48,14 @@ public class UserRegistration {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println(e.getMessage());
+        } catch (ClassNotFoundException classE) {
+            System.out.println("Class not found: " + classE.getMessage());
         }
         return -1;
     }
 
-    public void memberRegister(int userID, String memberName, String gender) throws ClassNotFoundException, SQLException {
+    public void memberRegister(int userID, String memberName, String gender) {
         String query = "INSERT INTO Member (memberID, memberName, gender, joinDate) VALUES (?, ?, ?, ?)";
         LocalDate joinDate = LocalDate.now(); // Get the current date
         Date sqlJoinDate = Date.valueOf(joinDate); // Convert to SQL Date
@@ -76,10 +68,12 @@ public class UserRegistration {
             ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } catch (ClassNotFoundException classE) {
+            System.out.println("Class not found: " + classE.getMessage());
         }
     }
-    
-    public void trainerRegister(int userID, String trainerName, String gender, int expYear) throws ClassNotFoundException, SQLException{
+
+    public void trainerRegister(int userID, String trainerName, String gender, int expYear){
         String query = "INSERT INTO Trainer (trainerID, trainerName, gender, expYear, joinDate) VALUES (?, ?, ?, ?, ?)";
         LocalDate joinDate = LocalDate.now(); // Get the current date
         Date sqlJoinDate = Date.valueOf(joinDate); // Convert to SQL Date
@@ -93,10 +87,12 @@ public class UserRegistration {
             ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } catch (ClassNotFoundException classE) {
+            System.out.println("Class not found: " + classE.getMessage());
         }
     }
 
-    public void adminRegister(int userID, String adminName) throws ClassNotFoundException, SQLException {
+    public void adminRegister(int userID, String adminName) {
         String query = "INSERT INTO Admin (adminID, adminName) VALUES (?, ?)";
         try (Connection con = ConnectToSQLServer.getConnection();
                 PreparedStatement ps = con.prepareStatement(query)) {
@@ -105,6 +101,8 @@ public class UserRegistration {
             ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } catch (ClassNotFoundException classE) {
+            System.out.println("Class not found: " + classE.getMessage());
         }
     }
 }

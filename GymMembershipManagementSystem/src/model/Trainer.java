@@ -20,7 +20,7 @@ public class Trainer extends User {
     public Trainer(int id, String username, String password, String salt,
              String name, String email, String role, String phoneNumber, String gender,
             String availableSessions) {
-        super(id, username, password, salt, name, email, role, phoneNumber, gender);
+        super(id, username, password, name, email, role, phoneNumber, gender);
         this.availableSessions = availableSessions;
     }
 
