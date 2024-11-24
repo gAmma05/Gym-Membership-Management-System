@@ -37,9 +37,8 @@ public class AdminMenu {
             System.out.println("We only accept credit card!");
             System.out.println("1. Manage gym's membership plans");
             System.out.println("2. Manage trainers and training session");
-            System.out.println("3. Show member progress");
-            System.out.println("4. Settings");
-            System.out.println("5. Logout");
+            System.out.println("3. Settings");
+            System.out.println("4. Logout");
             option = Validation.checkInt("Your option: ");
 
             switch (option) {
@@ -52,14 +51,10 @@ public class AdminMenu {
                     break;
 
                 case 3:
-                    adm.showMemberProgress(currentUser);
-                    break;
-
-                case 4:
                     adm.Settings(currentUser);
                     break;
 
-                case 5:
+                case 4:
                     System.out.println("Logout successfully");
                     return;
 
