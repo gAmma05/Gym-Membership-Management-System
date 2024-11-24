@@ -16,5 +16,6 @@ public interface ITrainerManagement {
     void updateMemberProgress(int progressID, String workoutHistory, String healthMetrics);
 
     void viewMemberProgress(int memberId);
-
+    
+    
 }
