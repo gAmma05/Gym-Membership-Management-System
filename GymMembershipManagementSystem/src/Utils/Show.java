@@ -27,6 +27,9 @@ public class Show {
         try (Connection con = ConnectToSQLServer.getConnection()) {
             PreparedStatement ps = con.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
+            
+            System.out.printf("%-4s - %-7s - %-4s - %-4s - %-30s%n",
+                        "Membership ID", "Membership Name", "Duration Months", "Price", "Benefit");
 
             while (rs.next()) {
                 hasResults = true;
@@ -39,8 +42,6 @@ public class Show {
                 System.out.printf("%-4d - %-7s - %-4d - %-4d - %-30s%n",
                         membershipID, membershipName, durationMonths, price, benefit);
             }
-
-            
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -64,7 +65,6 @@ public class Show {
                 System.out.printf("%-5d - %-15s%n", adminID, adminName);
             }
 
-            
         } catch (SQLException e) {
             System.out.println(e.getMessage());
 
@@ -83,13 +83,15 @@ public class Show {
             PreparedStatement ps = con.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
 
+            System.out.printf("%-5s - %-15s - %-7s%n",
+                    "Member ID", "MemberName", "Join Date");
             while (rs.next()) {
                 hasResults = true;
                 int memberID = rs.getInt("memberID");
                 String memberName = rs.getString("memberName");
                 Date joinDate = rs.getDate("joinDate");
 
-                System.out.printf("%-10d - %-20s - %-7s%n",
+                System.out.printf("%-5d - %-15s - %-7s%n",
                         memberID, memberName, joinDate);
             }
             if (!hasResults) {
@@ -112,6 +114,7 @@ public class Show {
         try (Connection con = ConnectToSQLServer.getConnection()) {
             PreparedStatement ps = con.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
+            System.out.printf("%-5s - %-15s - %-5s - %-7s%n", "Trainer ID", "Trainer Name", "Exp Year", "Join Date");
 
             while (rs.next()) {
                 hasResults = true;
@@ -119,10 +122,9 @@ public class Show {
                 String trainerName = rs.getString("trainerName");
                 int expYear = rs.getInt("expYear");
                 Date joinDate = rs.getDate("joinDate");
-                System.out.printf("%-5d - %-20s - %-5d - %-7s%n", trainerID, trainerName, expYear, joinDate);
+                System.out.printf("%-5d - %-15s - %-5d - %-7s%n", trainerID, trainerName, expYear, joinDate);
             }
 
-            
         } catch (SQLException e) {
             System.out.println(e.getMessage());
 
@@ -170,6 +172,8 @@ public class Show {
             PreparedStatement ps = con.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
 
+            System.out.printf("%-10s - %-20s - %-7s - %-30s - %-15s%n",
+                    "Progress ID", "Member Name", "Date Created", "Workout History", "Health Metrics");
             while (rs.next()) {
                 hasResults = true;
                 int progressID = rs.getInt("progressID");
@@ -178,7 +182,7 @@ public class Show {
                 String workoutHistory = rs.getString("workoutHistory");
                 String healthMetrics = rs.getString("healthMetrics");
 
-                System.out.printf("%-10d - %-20s - %-7s - %-30s - %15%n",
+                System.out.printf("%-10d - %-20s - %-7s - %-30s - %15s%n",
                         progressID, memberName, dateCreated, workoutHistory, healthMetrics);
             }
 

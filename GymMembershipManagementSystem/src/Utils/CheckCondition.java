@@ -113,25 +113,4 @@ public class CheckCondition {
         return false;
     }
 
-    public int checkDurationOfTS(int sessionID) {
-        String query = "SELECT durationByMinutes FROM TrainingSession WHERE sessionID = ?";
-        int result = -1;
-        try (Connection con = ConnectToSQLServer.getConnection()) {
-            PreparedStatement ps = con.prepareStatement(query);
-
-            ps.setInt(1, sessionID);
-
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                result = rs.getInt("durationByMinutes");
-                return result;
-            }
-        } catch (SQLException e) {
-            System.out.println("SQL Error: " + e.getMessage());
-        } catch (ClassNotFoundException classE) {
-            System.out.println("Class not found: " + classE.getMessage());
-        }
-        return result;
-    }
 }
