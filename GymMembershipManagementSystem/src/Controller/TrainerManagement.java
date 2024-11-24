@@ -1,4 +1,3 @@
-
 package Controller;
 
 import ConnectToSQLServer.ConnectToSQLServer;
@@ -7,34 +6,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class TrainerManagement {
+public class TrainerManagement implements ITrainerManagement {
 
-    // Method to schedule training sessions
-    public void scheduleTrainingSession(int trainerId, int memberId, String location, String sessionTime, int durationByMinutes) throws ClassNotFoundException {
-        String query = "INSERT INTO TrainingSession (trainerID, memberID, sessionTime, location, durationByMinutes) VALUES (?, ?, ?, ?, ?)";
-        try (Connection con = ConnectToSQLServer.getConnection();
-             PreparedStatement pstmt = con.prepareStatement(query)) {
-
-            pstmt.setInt(1, trainerId);
-            pstmt.setInt(2, memberId);
-            pstmt.setString(3, sessionTime);
-            pstmt.setString(4, location);
-            pstmt.setInt(5, durationByMinutes);
-
-            pstmt.executeUpdate();
-            System.out.println("Training session scheduled successfully.");
-        } catch (SQLException e) {
-            System.out.println("Error scheduling training session: " + e.getMessage());
-        }
-    }
-
-    // Method to track member progress: Add progress record
-    public void addMemberProgress(int memberId, String memberName, String dateCreated, String workoutHistory, String healthMetrics) throws ClassNotFoundException {
+    @Override
+    public void addMemberProgress(int memberID, String memberName, String dateCreated, String workoutHistory, String healthMetrics) {
         String query = "INSERT INTO MemberProgress (memberID, memberName, dateCreated, workoutHistory, healthMetrics) VALUES (?, ?, ?, ?, ?)";
         try (Connection con = ConnectToSQLServer.getConnection();
-             PreparedStatement pstmt = con.prepareStatement(query)) {
+                PreparedStatement pstmt = con.prepareStatement(query)) {
 
-            pstmt.setInt(1, memberId);
+            pstmt.setInt(1, memberID);
             pstmt.setString(2, memberName);
             pstmt.setString(3, dateCreated);
             pstmt.setString(4, workoutHistory);
@@ -44,31 +24,38 @@ public class TrainerManagement {
             System.out.println("Member progress added successfully.");
         } catch (SQLException e) {
             System.out.println("Error adding member progress: " + e.getMessage());
+        } catch (ClassNotFoundException classE) {
+            System.out.println("Class not found: " + classE.getMessage());
         }
     }
 
     // Method to update member progress
-    public void updateMemberProgress(int progressId, String workoutHistory, String healthMetrics) throws ClassNotFoundException {
+    
+    @Override
+    public void updateMemberProgress(int progressID, String workoutHistory, String healthMetrics) {
         String query = "UPDATE MemberProgress SET workoutHistory = ?, healthMetrics = ? WHERE progressID = ?";
         try (Connection con = ConnectToSQLServer.getConnection();
-             PreparedStatement pstmt = con.prepareStatement(query)) {
+                PreparedStatement pstmt = con.prepareStatement(query)) {
 
             pstmt.setString(1, workoutHistory);
             pstmt.setString(2, healthMetrics);
-            pstmt.setInt(3, progressId);
+            pstmt.setInt(3, progressID);
 
             pstmt.executeUpdate();
             System.out.println("Member progress updated successfully.");
         } catch (SQLException e) {
             System.out.println("Error updating member progress: " + e.getMessage());
+        } catch (ClassNotFoundException classE) {
+            System.out.println("Class not found: " + classE.getMessage());
         }
     }
 
     // Method to view member progress
-    public void viewMemberProgress(int memberId) throws ClassNotFoundException {
+    @Override
+    public void viewMemberProgress(int memberId) {
         String query = "SELECT * FROM MemberProgress WHERE memberID = ?";
         try (Connection con = ConnectToSQLServer.getConnection();
-             PreparedStatement pstmt = con.prepareStatement(query)) {
+                PreparedStatement pstmt = con.prepareStatement(query)) {
 
             pstmt.setInt(1, memberId);
             ResultSet rs = pstmt.executeQuery();
@@ -83,6 +70,8 @@ public class TrainerManagement {
             }
         } catch (SQLException e) {
             System.out.println("Error viewing member progress: " + e.getMessage());
+        } catch (ClassNotFoundException classE) {
+            System.out.println("Class not found: " + classE.getMessage());
         }
     }
 }

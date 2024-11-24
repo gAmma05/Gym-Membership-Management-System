@@ -10,7 +10,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import Utils.PasswordUtils;
 import java.security.NoSuchAlgorithmException;
 
 /**
@@ -20,26 +19,21 @@ import java.security.NoSuchAlgorithmException;
 public class UserLogin {
 
 
-    public boolean Login(String username, String password) throws SQLException, NoSuchAlgorithmException, ClassNotFoundException {
+    public boolean Login(String username, String password){
         try (Connection con = ConnectToSQLServer.getConnection()) {
-            String query = "SELECT password, salt, role FROM Users WHERE username = ?";
+            String query = "SELECT password FROM Users WHERE username = ?";
             PreparedStatement ps = con.prepareStatement(query);
 
             ps.setString(1, username);
             ResultSet result = ps.executeQuery();
 
             if (result.next()) {
-                String storedHashedPassword = result.getString("password");
-                String salt = result.getString("salt");
-                String hashedInputPassword = PasswordUtils.hashPassword(password, salt);
-                if (storedHashedPassword.equals(hashedInputPassword)) {
+                String storedPassword = result.getString("password");
+                if (storedPassword.equals(password)) {
                     System.out.println("Login successfully!");
-                    //System.out.println("Your role is: "+ role);
-                    //String rs = veri.checkRole(username);
                     return true;
                 } else {
                     System.out.println("Incorrect password");
-                    return false;
                 }
             } else {
                 //System.out.println("User not found");
@@ -47,8 +41,11 @@ public class UserLogin {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            return false;
+            
+        } catch (ClassNotFoundException classE) {
+            System.out.println("Class not found: " + classE.getMessage());
         }
+        return false;
     }
 
 }

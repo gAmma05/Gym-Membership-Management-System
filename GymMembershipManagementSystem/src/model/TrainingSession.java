@@ -5,18 +5,20 @@
  */
 package model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class TrainingSession {
+
     private int sessionID;
     private int trainerID;
     private int memberID;
-    private Date sessionTime;
+    private LocalDateTime sessionTime;
     private String location;
     private int durationByMinutes;
 
     // Constructor
-    public TrainingSession(int trainerID, int memberID, Date sessionTime, String location, int durationByMinutes) {
+    public TrainingSession(int sessionID, int trainerID, int memberID, LocalDateTime sessionTime, String location, int durationByMinutes) {
+        this.sessionID = sessionID;
         this.trainerID = trainerID;
         this.memberID = memberID;
         this.sessionTime = sessionTime;
@@ -49,16 +51,16 @@ public class TrainingSession {
         this.memberID = memberID;
     }
 
-    public Date getSessionTime() {
+    public LocalDateTime getSessionTime() {
         return sessionTime;
     }
 
-    public void setSessionTime(Date sessionTime) {
+    public void setSessionTime(LocalDateTime sessionTime) {
         this.sessionTime = sessionTime;
     }
 
     public String getLocation() {
-        return location;
+        return location != null ? location : "N/A";
     }
 
     public void setLocation(String location) {
@@ -75,14 +77,13 @@ public class TrainingSession {
 
     @Override
     public String toString() {
-        return "TrainingSession{" +
-                "sessionID=" + sessionID +
-                ", trainerID=" + trainerID +
-                ", memberID=" + memberID +
-                ", sessionTime=" + sessionTime +
-                ", location='" + location + '\'' +
-                ", durationByMinutes=" + durationByMinutes +
-                '}';
+        return "TrainingSession{"
+                + "sessionID=" + sessionID
+                + ", trainerID=" + trainerID
+                + ", memberID=" + memberID
+                + ", sessionTime=" + sessionTime
+                + ", location='" + location + '\''
+                + ", durationByMinutes=" + durationByMinutes
+                + '}';
     }
 }
-

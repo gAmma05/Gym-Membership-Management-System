@@ -24,7 +24,7 @@ public class User {
     public User() {
     }
 
-    public User(int id, String username, String password, String salt, String name, String email, String role, String phoneNumber, String gender) {
+    public User(int id, String username, String password, String name, String email, String role, String phoneNumber, String gender) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -58,14 +58,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
     }
 
     public String getName() {
@@ -110,7 +102,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", username=" + username + ", password=" + password + ", salt=" + salt + ", name=" + name + ", email=" + email + ", role=" + role + ", phoneNumber=" + phoneNumber + ", gender=" + gender + '}';
+        return "User{" + "id=" + id + ", username=" + username + ", password=" + password +   ", name=" + name + ", email=" + email + ", role=" + role + ", phoneNumber=" + phoneNumber + ", gender=" + gender + '}';
     }
 
 }

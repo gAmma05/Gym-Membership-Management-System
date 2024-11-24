@@ -31,7 +31,6 @@ CREATE TABLE Users (
     id INT PRIMARY KEY,
     username VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    salt NVARCHAR(255) NOT NULL,
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     role VARCHAR(20) NOT NULL,
@@ -97,8 +96,6 @@ CREATE TABLE TrainingSession (
 );
 GO
 
-DBCC CHECKIDENT ('TrainingSession', RESEED, 0);
-GO
 
 -- Create MemberProgress table
 CREATE TABLE MemberProgress (
@@ -120,7 +117,4 @@ CREATE TABLE Payment (
     paymentDate DATE DEFAULT GETDATE(),
     renewalDate DATE
 );
-GO
-
-DBCC CHECKIDENT ('Payment', RESEED, 0);
 GO

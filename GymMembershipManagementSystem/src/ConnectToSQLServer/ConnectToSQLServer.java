@@ -9,14 +9,14 @@ public class ConnectToSQLServer {
 
     private static final String SERVER = "localhost";
     private static final String USER = "sa";
-    private static final String PORT = "1433";
+
     private static final String PASSWORD = "12345";
     private static final String DATABASE = "GMMS";
 
     // Static method to get a connection to the database
     public static Connection getConnection() throws ClassNotFoundException, SQLException {
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        String connectionUrl = "jdbc:sqlserver://" + SERVER + ":" + PORT + ";databaseName=" + DATABASE + ";user=" + USER + ";password=" + PASSWORD + ";encrypt=true;trustServerCertificate=true";
+        String connectionUrl = "jdbc:sqlserver://" + SERVER + ";databaseName=" + DATABASE + ";user=" + USER + ";password=" + PASSWORD + ";encrypt=true;trustServerCertificate=true";
 
         Connection con = DriverManager.getConnection(connectionUrl);
         if (con != null) {
@@ -35,7 +35,7 @@ public class ConnectToSQLServer {
                                     "END;";
 
         // This connection will be to the master database for creating the GMMS database
-        try (Connection con = DriverManager.getConnection("jdbc:sqlserver://" + SERVER + ":" + PORT + ";user=" + USER + ";password=" + PASSWORD);
+        try (Connection con = DriverManager.getConnection("jdbc:sqlserver://" + SERVER + ";user=" + USER + ";password=" + PASSWORD);
              Statement stmt = con.createStatement()) {
             stmt.execute(createDatabaseSQL);
             System.out.println("Database created successfully or already exists.");

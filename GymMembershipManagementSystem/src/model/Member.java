@@ -5,6 +5,7 @@
  */
 package model;
 
+import java.util.Date;
 
 /**
  *
@@ -12,39 +13,39 @@ package model;
  */
 public class Member extends User {
 
-    private String joinDate;
-    private int membershipId;
+    private Date joinDate;
+    private int membershipID;
 
     public Member() {
     }
 
     public Member(int id, String username, String password, String salt,
-             String name, String email, String role, String phoneNumber, String gender,
-             String joinDate, int membershipId) {
-        super(id, username, password, salt, name, email, role, phoneNumber, gender);
+            String name, String email, String role, String phoneNumber, String gender,
+            Date joinDate, int membershipID) {
+        super(id, username, password, name, email, role, phoneNumber, gender);
         this.joinDate = joinDate;
-        this.membershipId = membershipId;
+        this.membershipID = membershipID;
     }
 
-    public String getJoinDate() {
+    public Date getJoinDate() {
         return joinDate;
     }
 
-    public void setJoinDate(String joinDate) {
+    public void setJoinDate(Date joinDate) {
         this.joinDate = joinDate;
     }
 
-    public int getMembershipId() {
-        return membershipId;
+    public int getMembershipID() {
+        return membershipID;
     }
 
-    public void setMembershipId(int membershipId) {
-        this.membershipId = membershipId;
+    public void setMembershipID(int membershipID) {
+        this.membershipID = membershipID;
     }
 
     @Override
     public String toString() {
-        return "Member{" + "joinDate=" + joinDate + ", membershipId=" + membershipId + '}';
+        return "Member{" + "joinDate=" + joinDate + ", membershipId=" + membershipID + '}';
     }
 
 }
