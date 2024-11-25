@@ -9,6 +9,7 @@ import Utils.CheckCondition;
 import Utils.Validation;
 import Utils.Verification;
 import Viewer.AdminMenu;
+import Viewer.MemberMenu;
 import Viewer.TrainerMenu;
 import java.time.LocalDate;
 import model.Admin;
@@ -27,6 +28,7 @@ public class LoginRegisterMenu {
     Verification veri = new Verification();
     AdminMenu admin = new AdminMenu();
     TrainerMenu trainer = new TrainerMenu();
+    MemberMenu member = new MemberMenu();
     CheckCondition cc = new CheckCondition();
 
     public String currentUser;
@@ -81,9 +83,11 @@ public class LoginRegisterMenu {
         if (ul.Login(username, password)) {
             currentUser = username;
             if (veri.checkRole(username).equalsIgnoreCase("Admin")) {
+                //Access to admin menu
                 admin.adMenu(currentUser);
             } else if (veri.checkRole(username).equalsIgnoreCase("Member")) {
                 //Access to member menu
+                member.membershipMenu(currentUser);
             } else if (veri.checkRole(username).equalsIgnoreCase("Trainer")) {
                 //Access to trainer menu
                 trainer.trMenu(currentUser);
@@ -148,8 +152,8 @@ public class LoginRegisterMenu {
                     break;
 
                 case 4:
-
-                    break;
+                    System.out.println("Exiting");
+                    return;
 
                 default:
                     System.out.println("Invalid input! Try again!");

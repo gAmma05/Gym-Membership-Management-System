@@ -22,6 +22,7 @@ public interface IAdminManagement {
     void deleteMembership(int membershipID);
 
     //////////////////////////////////////////////////////////////////////
+    /*
     void deleteUsers(int userID);
 
     void deleteAdmins(int userID);
@@ -29,7 +30,7 @@ public interface IAdminManagement {
     void deleteMembers(int userID);
 
     void deleteTrainers(int userID);
-
+     */
     //////////////////////////////////////////////////////////////////////
     void assignTrainerToMember(TrainingSession ts);
 

@@ -58,7 +58,8 @@ public class AdminManagementMenu {
             System.out.println("1. Create membership");
             System.out.println("2. Update membership");
             System.out.println("3. Delete membership");
-            System.out.println("4. Exit");
+            System.out.println("4. Show available membership plan");
+            System.out.println("5. Exit");
 
             option = Validation.checkInt("Your option: ");
 
@@ -76,6 +77,9 @@ public class AdminManagementMenu {
                     break;
 
                 case 4:
+                    showMembershipList();
+                    break;
+                case 5:
                     System.out.println("Exiting");
                     return;
 
@@ -118,6 +122,7 @@ public class AdminManagementMenu {
                     break;
 
                 case 3:
+                    System.out.println("WARNING: One trainer can be assigned to only one member");
                     assignTrainerToMember();
                     break;
 
@@ -146,14 +151,7 @@ public class AdminManagementMenu {
         } while (option != 7);
     }
 
-    public void showMemberProgress(String currentUser) {
-        if (!cc.usernameCheck(currentUser)) {
-            return;
-        }
-        showMembProgress();
-
-    }
-
+    /*
     public void Settings(String currentUser) {
 
         int option;
@@ -189,7 +187,7 @@ public class AdminManagementMenu {
             }
         } while (option != 2);
     }
-
+     */
     private void createMembership() {
         int membershipID = Validation.checkInt("Enter the membership ID you want to create: ");
         if (cc.membershipIDCheck(membershipID)) {
@@ -254,6 +252,15 @@ public class AdminManagementMenu {
         }
     }
 
+    private void showMembershipList() {
+        if (show.showMembershipPlanList()) {
+            //print
+
+        } else {
+            System.out.println("The list is empty");
+        }
+    }
+
     private void showTrainerList() {
         if (show.showTrainerList()) {
             System.out.println("");
@@ -270,6 +277,7 @@ public class AdminManagementMenu {
         }
     }
 
+    /*
     private void deleteAdmins() {
         if (show.showAdminList()) {
             System.out.print("Enter the user ID you want to delete: ");
@@ -332,7 +340,7 @@ public class AdminManagementMenu {
             System.out.println("The list is empty");
         }
     }
-
+     */
     private void assignTrainerToMember() {
         int sessionID = Validation.checkInt("Insert training session ID: ");
         if (cc.checkTrainingSession(sessionID)) {
@@ -423,9 +431,4 @@ public class AdminManagementMenu {
             System.out.println("The list is empty");
         }
     }
-
-    private void showMembProgress() {
-        show.showMemberProgress();
-    }
-
 }

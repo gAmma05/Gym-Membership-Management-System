@@ -161,6 +161,8 @@ public class Show {
     }
 
      */
+    
+    /*
     public boolean showMemberProgress() {
         String query = "SELECT mpr.progressID, m.memberName [Member Name], mpr.dateCreated, mpr.workoutHistory, mpr.healthMetrics "
                 + "FROM MemberProgress mpr "
@@ -193,7 +195,7 @@ public class Show {
         }
         return hasResults;
     }
-
+*/
     public boolean showTrainingSession() {
         String query = "SELECT ts.sessionID, ts.sessionTime, ts.location, ts.durationByMinutes, "
                 + "t.trainerName, m.memberName "
@@ -237,5 +239,7 @@ public class Show {
         }
         return hasResults;
     }
+    
+    
 
 }

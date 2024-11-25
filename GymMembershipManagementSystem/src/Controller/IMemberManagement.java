@@ -5,20 +5,24 @@
  */
 package Controller;
 
+import java.time.LocalDate;
+import model.Payment;
+
 /**
  *
  * @author gAmma
  */
 public interface IMemberManagement {
-    void buyMembership();
-    
-    void cancelMembership();
-    
-    void renewMembership();
-    
-    ////////////////////////////////////////////////
-    
-    void yourHealthMetric();
-    
-    void yourWorkoutHistory();
+
+    void registerMembership(int membershipID, int memberID);
+
+    void cancelMembership(int memberID);
+
+    void renewMembership(int membershipID, int memberID);
+
+    void trackMemberProgress(int memberID);
+
+    void paymentCreate(Payment pm);
+
+    void paymentUpdate(int newMoneyPaid, LocalDate renewalDate, String newStatus);
 }

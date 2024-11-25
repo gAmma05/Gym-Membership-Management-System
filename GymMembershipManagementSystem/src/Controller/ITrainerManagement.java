@@ -5,17 +5,24 @@
  */
 package Controller;
 
+import java.time.LocalDate;
+import model.MemberProgress;
+
 /**
  *
  * @author gAmma
  */
 public interface ITrainerManagement {
 
-    void addMemberProgress(int memberID, String memberName, String dateCreated, String workoutHistory, String healthMetrics);
+    void addMemberProgress(MemberProgress mpr);
 
-    void updateMemberProgress(int progressID, String workoutHistory, String healthMetrics);
+    void updateMemberProgress(int progressID, LocalDate dateCreated, String workoutHistory, String healthMetrics);
+    
+    void deleteMemberProgress(int progressID);
 
-    void viewMemberProgress(int memberId);
+    boolean viewMemberProgress(int memberId);
     
+    boolean viewAssignedMember(int trainerID);
     
+    boolean viewSchedule(int trainerID);
 }

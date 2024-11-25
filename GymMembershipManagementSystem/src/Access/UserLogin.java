@@ -10,7 +10,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.security.NoSuchAlgorithmException;
 
 /**
  *
@@ -40,7 +39,7 @@ public class UserLogin {
                 return false;
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
             
         } catch (ClassNotFoundException classE) {
             System.out.println("Class not found: " + classE.getMessage());

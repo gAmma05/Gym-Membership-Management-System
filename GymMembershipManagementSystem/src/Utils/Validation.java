@@ -48,6 +48,24 @@ public class Validation {
         }
     }
     
+    public static float checkFloat(String mess) {
+        float value;
+        while (true) {
+            try {
+                System.out.print(mess);
+                value = Float.parseFloat(sc.nextLine());
+                if (value <= 0) {
+                    throw new Exception("Please input greater than 0!");
+                }
+                return value;
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a float value!");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+    
     public static String checkYesNo(String mess) {
         String value;
         while (true) {

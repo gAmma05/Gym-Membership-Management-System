@@ -83,7 +83,6 @@ CREATE TABLE Trainer (
 );
 GO
 
--- Reset the identity column in the Trainer table
 
 -- Create TrainingSession table
 CREATE TABLE TrainingSession (
@@ -111,10 +110,12 @@ GO
 
 -- Create Payment table
 CREATE TABLE Payment (
-    paymentID INT PRIMARY KEY IDENTITY(1,1),
+    paymentID INT PRIMARY KEY,
     memberID INT,
     FOREIGN KEY(memberID) REFERENCES Member(memberID) ON DELETE CASCADE,
-    paymentDate DATE DEFAULT GETDATE(),
-    renewalDate DATE
+    moneyPaid INT,
+    paymentDate DATE,
+    renewalDate DATE,
+    status VARCHAR(20)
 );
 GO

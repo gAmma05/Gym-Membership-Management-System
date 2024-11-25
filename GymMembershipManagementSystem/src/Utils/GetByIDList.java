@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Admin;
 import model.Member;
+import model.MemberProgress;
 import model.MembershipPlan;
 import model.Trainer;
 import model.TrainingSession;
@@ -74,6 +75,16 @@ public class GetByIDList {
         for(TrainingSession ts : tsl){
             if(ID == ts.getSessionID()){
                 return ts;
+            }
+        }
+        return null;
+    }
+    
+    public MemberProgress getMPByID(int ID){
+        List<MemberProgress> mpl = new ArrayList<>();
+        for(MemberProgress mp : mpl){
+            if(ID == mp.getProgressID()){
+                return mp;
             }
         }
         return null;
