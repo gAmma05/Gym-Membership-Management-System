@@ -158,7 +158,7 @@ public class TrainerManagementMenu {
             int weight = Validation.checkInt("Weight: ");
             float height = Validation.checkFloat("Height: ");
             double BMI = weight / (height * height);
-            System.out.printf("BMI = %.2f", BMI);
+            System.out.printf("BMI = %.2f%n", BMI);
             String healthMetric = String.format("Weight = %d  Height = %.2f, BMI = %.2f", weight, height, BMI);
 
             System.out.println(memberName + "'s " + "workout history: ");

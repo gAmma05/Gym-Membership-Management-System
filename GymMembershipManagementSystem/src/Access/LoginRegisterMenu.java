@@ -208,7 +208,7 @@ public class LoginRegisterMenu {
                 case "Trainer":
                     int expYear = Validation.checkInt("Your experience year: ");
                     LocalDate traJoinDate = LocalDate.now();
-                    Trainer tra = new Trainer(userID, username, password, name, email, role, phoneNumber, gender, traJoinDate, expYear, null);
+                    Trainer tra = new Trainer(userID, username, password, name, email, role, phoneNumber, gender, traJoinDate, expYear);
                     ur.trainerRegister(tra);
                     break;
 

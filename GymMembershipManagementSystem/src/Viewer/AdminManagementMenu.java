@@ -151,43 +151,6 @@ public class AdminManagementMenu {
         } while (option != 7);
     }
 
-    /*
-    public void Settings(String currentUser) {
-
-        int option;
-
-        do {
-            if (!cc.usernameCheck(currentUser)) {
-                return;
-            }
-            System.out.println(" ------------//------------");
-            System.out.println("Your current user: " + currentUser);
-            System.out.println("1. Delete admins");
-            System.out.println("2. Delete members");
-            System.out.println("3. Delete trainers");
-            System.out.println("4. Exit");
-            option = Validation.checkInt("Your option: ");
-
-            switch (option) {
-                case 1:
-                    deleteAdmins();
-                    break;
-
-                case 2:
-                    deleteMembers();
-                    break;
-
-                case 3:
-                    deleteTrainers();
-                    break;
-
-                case 4:
-                    System.out.println("Exiting");
-                    return;
-            }
-        } while (option != 2);
-    }
-     */
     private void createMembership() {
         int membershipID = Validation.checkInt("Enter the membership ID you want to create: ");
         if (cc.membershipIDCheck(membershipID)) {
@@ -277,70 +240,6 @@ public class AdminManagementMenu {
         }
     }
 
-    /*
-    private void deleteAdmins() {
-        if (show.showAdminList()) {
-            System.out.print("Enter the user ID you want to delete: ");
-            int userID = sc.nextInt();
-            boolean checkID = cc.userIDCheck(userID);
-            if (!checkID) {
-                System.out.println("No ID found");
-            } else {
-                User u = gbil.getUserByID(userID);
-                use.remove(u);
-
-                Admin a = gbil.getAdminByID(userID);
-                adm.remove(a);
-
-                am.deleteAdmins(userID);
-            }
-        } else {
-            System.out.println("The list is empty");
-        }
-    }
-
-    private void deleteMembers() {
-        if (show.showMemberList()) {
-            System.out.print("Enter the user ID you want to delete: ");
-            int userID = sc.nextInt();
-            boolean checkID = cc.userIDCheck(userID);
-            if (!checkID) {
-                System.out.println("No ID found");
-            } else {
-                User u = gbil.getUserByID(userID);
-                use.remove(u);
-
-                Member m = gbil.getMemberByID(userID);
-                mem.remove(m);
-
-                am.deleteMembers(userID);
-            }
-        } else {
-            System.out.println("The list is empty");
-        }
-    }
-
-    private void deleteTrainers() {
-        if (show.showTrainerList()) {
-            System.out.print("Enter the user ID you want to delete: ");
-            int userID = sc.nextInt();
-            boolean checkID = cc.userIDCheck(userID);
-            if (!checkID) {
-                System.out.println("No ID found");
-            } else {
-                User u = gbil.getUserByID(userID);
-                use.remove(u);
-
-                Trainer t = gbil.getTrainerByID(userID);
-                tra.remove(t);
-
-                am.deleteTrainers(userID);
-            }
-        } else {
-            System.out.println("The list is empty");
-        }
-    }
-     */
     private void assignTrainerToMember() {
         int sessionID = Validation.checkInt("Insert training session ID: ");
         if (cc.checkTrainingSession(sessionID)) {
@@ -398,7 +297,7 @@ public class AdminManagementMenu {
                     ts.setLocation(location);
                     ts.setDurationByMinutes(durationByMinutes);
                 }
-                int trainerID = gbis.getAssignedTrainer(sessionID);
+                int trainerID = gbis.getAssignedTrainerBySession(sessionID);
                 int memberID = gbis.getAssignedMember(sessionID);
                 am.scheduleTrainingSession(sessionID, trainerID, memberID, sessionTime, location, durationByMinutes);
             } else if (duration > 0) {

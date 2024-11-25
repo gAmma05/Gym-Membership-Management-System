@@ -39,9 +39,9 @@ public class MemberManagementMenu {
             System.out.println("1. Register for a Membership");
             System.out.println("2. Cancel Membership");
             System.out.println("3. Renew membership");
-            System.out.println("4. Manage payment");
-            System.out.println("5. Exit");
-            System.out.print("Your option: ");
+            System.out.println("4. Show your membership plan");
+            System.out.println("5. Manage payment");
+            System.out.println("6. Exit");
 
             option = Validation.checkInt("Your option: "); // Ensure you have a Validation class with checkInt()
 
@@ -59,17 +59,21 @@ public class MemberManagementMenu {
                     break;
 
                 case 4:
-                    selectPaymentMethod(memberID);
+                    showMembershipPlan(memberID);
                     break;
 
                 case 5:
+                    paymentManagement(memberID);
+                    break;
+
+                case 6:
                     System.out.println("Exiting Membership Management. Goodbye!");
                     break;
 
                 default:
                     System.out.println("Invalid input. Please try again.");
             }
-        } while (option != 4);
+        } while (option != 6);
     }
 
     private void registerMembership(int memberID) {
@@ -117,75 +121,101 @@ public class MemberManagementMenu {
         }
     }
 
-    private void selectPaymentMethod(int memberID) {
-
-        System.out.println("\n=== Select Payment Method ===");
-        System.out.println("1. Create payment");
-        System.out.println("2. Renew payment");
-        System.out.println("3. Delete payment");
-        System.out.println("4. Exit");
-        int choice = Validation.checkInt("Choose your payment method: ");
-
-        switch (choice) {
-            case 1:
-                if (!cc.isMembershipActive(memberID)) {
-                    System.out.println("You don't have any membership to pay");
-                } else {
-                    int paymentID = Validation.checkInt("Insert payment ID: ");
-
-                    int moneyPaid = Validation.checkInt("Insert money to pay");
-                    LocalDate paymentDate = LocalDate.now();
-                    String confirm = Validation.checkYesNo("Do you want to pay it right now?(Y/N): ");
-                    if (confirm.equalsIgnoreCase("y")) {
-                        String status = "Completed";
-                        Payment pm = new Payment(paymentID, memberID, moneyPaid, paymentDate, null, status);
-                        im.paymentCreate(pm);
-
-                    } else if (confirm.equalsIgnoreCase("n")) {
-                        String status = "Uncompleted";
-                        Payment pm = new Payment(paymentID, memberID, moneyPaid, paymentDate, null, status);
-                        im.paymentCreate(pm);
-                    }
-                }
-                break;
-            case 2:
-                if (!cc.isPaymentActive(memberID)) {
-                    Payment newPM = gbis.getPaymentByID(memberID);
-
-                    int newMoneyPaid = Validation.checkInt("Insert money to pay");
-                    LocalDate renewalDate = LocalDate.now();
-
-                    if (newPM != null) {
-                        newPM.setMoneyPaid(newMoneyPaid);
-                        newPM.setRenewalDate(renewalDate);
-                    }
-
-                    String confirm = Validation.checkYesNo("Do you want to pay it now? (Y/N): ");
-                    String newStatus = "";
-                    if (confirm.equalsIgnoreCase("y")) {
-                        newStatus = "Completed";
-                        if (newPM != null) {
-                            newPM.setStatus(newStatus);
-                        }
-
-                    } else if (confirm.equalsIgnoreCase("n")) {
-                        newStatus = "Uncompleted";
-                        if (newPM != null) {
-                            newPM.setStatus(newStatus);
-                        }
-                    }
-                    im.paymentUpdate(memberID, newMoneyPaid, renewalDate, newStatus);
-                }
-                break;
-            case 3:
-                System.out.println("Payment Method: PayPal selected.");
-                break;
-            case 4:
-                System.out.println("Exiting payment selection.");
-                break;
-            default:
-                System.out.println("Invalid input. Please try again.");
+    private void showMembershipPlan(int memberID) {
+        System.out.println("\n=== Show Membership ===");
+        int msID = gbis.getMembershipIDByMember(memberID);
+        if (msID != 0) {
+            im.showMembershipPlan(msID);
+        } else {
+            System.out.println("You haven't registered any plan");
         }
-
     }
+
+    private void paymentManagement(int memberID) {
+
+        int choice;
+        do {
+            System.out.println("\n=== Select Payment Method ===");
+            System.out.println("1. Create payment");
+            System.out.println("2. Renew payment");
+            System.out.println("3. Delete payment");
+            System.out.println("4. Show your payment list(Completed/Uncompleted)");
+            System.out.println("5. Exit");
+            choice = Validation.checkInt("Choose your payment method: ");
+
+            switch (choice) {
+                case 1:
+                    int paymentID = Validation.checkInt("Insert payment ID: ");
+                    if (cc.isPaymentDuplicated(paymentID)) {
+                        System.out.println("This payment ID is being used");
+                    } else {
+                        int moneyPaid = Validation.checkInt("Insert money to pay: ");
+                        LocalDate paymentDate = LocalDate.now();
+                        String confirm1 = Validation.checkYesNo("Do you want to pay it right now?(Y/N): ");
+                        if (confirm1.equalsIgnoreCase("y")) {
+                            String status = "Completed";
+                            Payment pm = new Payment(paymentID, memberID, moneyPaid, paymentDate, null, status);
+                            im.paymentCreate(pm);
+                        } else if (confirm1.equalsIgnoreCase("n")) {
+                            String status = "Uncompleted";
+                            Payment pm = new Payment(paymentID, memberID, moneyPaid, paymentDate, null, status);
+                            im.paymentCreate(pm);
+                        }
+                    }
+                    break;
+
+                case 2:
+                    int newPaymentID = Validation.checkInt("Insert payment ID: ");
+                    if (cc.isPaymentDuplicated(newPaymentID)) {
+                        System.out.println("ok");
+                        Payment newPM = gbis.getPaymentByID(memberID);
+
+                        int newMoneyPaid = Validation.checkInt("Insert money to pay: ");
+                        LocalDate renewalDate = LocalDate.now();
+
+                        if (newPM != null) {
+                            newPM.setMoneyPaid(newMoneyPaid);
+                            newPM.setRenewalDate(renewalDate);
+                        }
+
+                        String confirm2 = Validation.checkYesNo("Do you want to pay it now? (Y/N): ");
+                        String newStatus = "";
+                        if (confirm2.equalsIgnoreCase("y")) {
+                            newStatus = "Completed";
+                            if (newPM != null) {
+                                newPM.setStatus(newStatus);
+                            }
+
+                        } else if (confirm2.equalsIgnoreCase("n")) {
+                            newStatus = "Uncompleted";
+                            if (newPM != null) {
+                                newPM.setStatus(newStatus);
+                            }
+                        }
+                        im.paymentUpdate(memberID, newMoneyPaid, renewalDate, newStatus);
+                    }else{
+                        System.out.println("No ID found");
+                    }
+                    break;
+                case 3:
+                    int delPaymentID = Validation.checkInt("Insert payment ID: ");
+                    if (cc.isPaymentDuplicated(delPaymentID)) {
+                        im.paymentDelete(delPaymentID);
+                    }else{
+                        System.out.println("No ID found");
+                    }
+                    break;
+
+                case 4:
+                    im.showPaymentList(memberID);
+                    break;
+                case 5:
+                    System.out.println("Exiting payment selection.");
+                    break;
+                default:
+                    System.out.println("Invalid input. Please try again.");
+            }
+        } while (choice != 5);
+    }
+
 }

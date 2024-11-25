@@ -19,10 +19,16 @@ public interface IMemberManagement {
     void cancelMembership(int memberID);
 
     void renewMembership(int membershipID, int memberID);
+    
+    void showMembershipPlan(int msID);
 
     void trackMemberProgress(int memberID);
 
     void paymentCreate(Payment pm);
 
-    void paymentUpdate(int newMoneyPaid, LocalDate renewalDate, String newStatus);
+    void paymentUpdate(int memberID, int newMoneyPaid, LocalDate renewalDate, String newStatus);
+
+    void paymentDelete(int memberID);
+    
+    void showPaymentList(int memberID);
 }

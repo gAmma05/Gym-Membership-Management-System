@@ -48,7 +48,7 @@ public class CheckCondition {
                 return rs.getInt(1) > 0;
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("SQL error: " + e.getMessage());
         } catch (ClassNotFoundException classE) {
             System.out.println("Class not found: " + classE.getMessage());
         }
@@ -205,6 +205,27 @@ public class CheckCondition {
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     return rs.getString("status").equalsIgnoreCase("Uncompleted"); 
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            System.out.println("Class not found: " + e.getMessage());
+        }
+        return false;
+    }
+    
+    public boolean isPaymentDuplicated(int paymentID){
+        String query = "SELECT COUNT(*) FROM Payment WHERE paymentID = ?";
+
+        try (Connection con = ConnectToSQLServer.getConnection();
+                PreparedStatement pstmt = con.prepareStatement(query)) {
+
+            pstmt.setInt(1, paymentID);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
                 }
             }
         } catch (SQLException e) {

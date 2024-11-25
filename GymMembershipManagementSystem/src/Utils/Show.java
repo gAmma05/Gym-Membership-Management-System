@@ -51,6 +51,7 @@ public class Show {
         return hasResults;
     }
 
+    //probably useless
     public boolean showAdminList() {
         String query = "SELECT adminID, adminName FROM Admin";
         boolean hasResults = false;
@@ -134,33 +135,7 @@ public class Show {
         return hasResults;
     }
 
-    /*
-    public boolean showUser() throws ClassNotFoundException {
-        String query = "SELECT id, username FROM Users";
-        try (Connection con = ConnectToSQLServer.getConnection()) {
-            PreparedStatement ps = con.prepareStatement(query);
-            ResultSet rs = ps.executeQuery();
-
-            boolean hasResults = false;
-
-            while (rs.next()) {
-                hasResults = true;
-                int userID = rs.getInt("id");
-                String username = rs.getString("username");
-                System.out.printf("%-5d - %-10s", userID, username);
-            }
-            
-            if(!hasResults){
-                return false;
-            }
-            
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return true;
-    }
-
-     */
+    
     
     /*
     public boolean showMemberProgress() {
@@ -239,7 +214,6 @@ public class Show {
         }
         return hasResults;
     }
-    
     
 
 }

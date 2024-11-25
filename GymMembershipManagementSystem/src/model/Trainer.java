@@ -15,18 +15,15 @@ public class Trainer extends User {
 
     private LocalDate joinDate;
     private int expYear;
-    private String availableSessions; // Corresponds to 'availableSessions' column
 
     public Trainer() {
     }
 
-    public Trainer(int id, String username, String password, String name, 
-            String email, String role, String phoneNumber, String gender, LocalDate joinDate, int expYear,
-            String availableSessions) {
+    public Trainer(int id, String username, String password, String name,
+            String email, String role, String phoneNumber, String gender, LocalDate joinDate, int expYear) {
         super(id, username, password, name, email, role, phoneNumber, gender);
         this.joinDate = joinDate;
         this.expYear = expYear;
-        this.availableSessions = availableSessions;
     }
 
     public LocalDate getJoinDate() {
@@ -41,17 +38,9 @@ public class Trainer extends User {
         this.expYear = expYear;
     }
 
-    public String getAvailableSessions() {
-        return availableSessions;
-    }
-
-    public void setAvailableSessions(String availableSessions) {
-        this.availableSessions = availableSessions;
-    }
-
     @Override
     public String toString() {
-        return "Trainer{" + "joinDate=" + joinDate + ", " + "availableSessions=" + "expYear=" + expYear + ", "  + availableSessions + '}';
+        return "Trainer{" + "joinDate=" + joinDate + ", " + "expYear=" + expYear + '}';
     }
 
 }

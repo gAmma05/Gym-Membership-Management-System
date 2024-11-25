@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import model.Payment;
+import model.Trainer;
 import model.User;
 
 /**
@@ -49,6 +50,65 @@ public class GetByIDSQL {
         return null;
     }
 
+    public Trainer getTrainerByID(int id) {
+        String query = "SELECT * FROM Trainer WHERE trainerID = ?";
+        User us = getUserByID(id);
+        try (Connection con = ConnectToSQLServer.getConnection()) {
+
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                //int trainerID = rs.getInt("trainerID");
+                //int trainerName = rs.getInt("trainerName");
+                //String gender = rs.getString("gender");
+                int expYear = rs.getInt("expYear");
+
+                Date rawJoinDate = rs.getDate("joinDate");
+                LocalDate joinDate = rawJoinDate.toLocalDate();
+                if (us != null) {
+                    Trainer tra = new Trainer(us.getId(), us.getUsername(), us.getPassword(), us.getName(), us.getEmail(),
+                            us.getRole(), us.getPhoneNumber(), us.getGender(), joinDate, expYear);
+                    return tra;
+                }
+
+            }
+
+        } catch (SQLException sql) {
+            System.out.println("SQL Error: " + sql.getLocalizedMessage());
+        } catch (ClassNotFoundException classE) {
+            System.out.println("Class not found: " + classE.getMessage());
+        }
+        return null;
+    }
+
+    public int getAssignedTrainerForMember(int memberID) {
+        String query = "SELECT ts.sessionID, ts.sessionTime, ts.location, ts.durationByMinutes, "
+                + "ts.memberID, t.trainerName, m.memberName "
+                + "FROM TrainingSession ts "
+                + "JOIN Trainer t ON ts.trainerID = t.trainerID "
+                + "JOIN Member m ON ts.memberID = m.memberID "
+                + "WHERE ts.memberID = ?";
+        try (Connection con = ConnectToSQLServer.getConnection()) {
+            PreparedStatement ps = con.prepareStatement(query);
+
+            ps.setInt(1, memberID);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                int trainerID = rs.getInt("trainerID");
+                return trainerID;
+            }
+
+        } catch (SQLException sql) {
+            System.out.println("SQL Error: " + sql.getLocalizedMessage());
+        } catch (ClassNotFoundException classE) {
+            System.out.println("Class not found: " + classE.getMessage());
+        }
+        return 0;
+    }
+
     public int getAssignedMember(int sessionID) {
         String query = "SELECT memberID FROM TrainingSession WHERE sessionID = ?";
         try (Connection con = ConnectToSQLServer.getConnection()) {
@@ -68,10 +128,33 @@ public class GetByIDSQL {
         return 0;
     }
 
-    public int getAssignedTrainer(int sessionID) {
+    public int getAssignedTrainerBySession(int sessionID) {
         String query = "SELECT trainerID FROM TrainingSession WHERE sessionID = ?";
         try (Connection con = ConnectToSQLServer.getConnection()) {
             PreparedStatement ps = con.prepareStatement(query);
+
+            ps.setInt(1, sessionID);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                int trainerID = rs.getInt("trainerID");
+                return trainerID;
+            }
+
+        } catch (SQLException sql) {
+            System.out.println("SQL Error: " + sql.getLocalizedMessage());
+        } catch (ClassNotFoundException classE) {
+            System.out.println("Class not found: " + classE.getMessage());
+        }
+        return 0;
+    }
+
+    public int getAssignedTrainerByMember(int memberID) {
+        String query = "SELECT trainerID FROM TrainingSession WHERE memberID = ?";
+        try (Connection con = ConnectToSQLServer.getConnection()) {
+            PreparedStatement ps = con.prepareStatement(query);
+
+            ps.setInt(1, memberID);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
@@ -252,17 +335,22 @@ public class GetByIDSQL {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
 
-           
             if (rs.next()) {
                 int paymentID = rs.getInt("paymentID");
                 int memberID = rs.getInt("memberID");
                 int moneyPaid = rs.getInt("moneyPaid");
                 Date sqlPD = rs.getDate("paymentDate");
                 LocalDate paymentDate = sqlPD.toLocalDate();
-                
+
+                LocalDate renewalDate;
+
                 Date sqlRD = rs.getDate("renewalDate");
-                LocalDate renewalDate = sqlRD.toLocalDate();
-                
+                if (sqlRD != null) {
+                    renewalDate = sqlRD.toLocalDate();
+                } else {
+                    renewalDate = null;
+                }
+
                 String status = rs.getString("status");
                 Payment pm = new Payment(paymentID, memberID, moneyPaid, paymentDate, renewalDate, status);
                 return pm;
@@ -274,5 +362,25 @@ public class GetByIDSQL {
             System.out.println("Class not found: " + classE.getMessage());
         }
         return null;
+    }
+
+    public int getMembershipIDByMember(int memberID) {
+        String query = "SELECT msID FROM Member WHERE MemberID = ?";
+        try (Connection con = ConnectToSQLServer.getConnection()) {
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1, memberID);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                int msID = rs.getInt("msID");
+                return msID;
+            }
+
+        } catch (SQLException sql) {
+            System.out.println("SQL Error: " + sql.getLocalizedMessage());
+        } catch (ClassNotFoundException classE) {
+            System.out.println("Class not found: " + classE.getMessage());
+        }
+        return 0;
     }
 }
